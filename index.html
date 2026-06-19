@@ -1,115 +1,62 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>一頁一題模擬考雛形</title>
+<title>Kiwi學長 AI應用規劃師歷屆題庫</title>
 <style>
-body{font-family:sans-serif;background:#f3f4f6;padding:15px;max-width:700px;margin:auto}
-.card{background:white;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.option{display:block;padding:12px;border:1px solid #ddd;border-radius:10px;margin:10px 0;cursor:pointer}
-.option:hover{background:#f8fafc}
-#feedback{margin-top:15px;padding:12px;border-radius:10px;display:none}
-.correct{background:#dcfce7}
-.wrong{background:#fee2e2}
-button{padding:12px 20px;border:none;border-radius:10px;background:#2563eb;color:white;margin-top:10px}
-.progress{margin-bottom:15px;color:#666}
+:root{--bg:#f5f7fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--primary:#2563eb;--border:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,#f5f7fb 45%);color:var(--text);line-height:1.7}
+.container{max-width:900px;margin:0 auto;padding:22px}
+.hero{background:var(--card);border-radius:24px;padding:28px 24px;box-shadow:0 10px 30px rgba(15,23,42,.08);margin-bottom:18px}
+.brand{display:inline-block;background:#eef2ff;color:#1e40af;font-weight:800;padding:6px 12px;border-radius:999px;font-size:14px;margin-bottom:12px}
+h1{margin:0 0 8px;font-size:30px;line-height:1.25}
+.subtitle{color:var(--muted);font-size:16px}
+.section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;margin:16px 0;box-shadow:0 6px 18px rgba(15,23,42,.05)}
+.section h2{margin:0 0 12px;font-size:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.exam{display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff;transition:.18s ease}
+.exam:hover{transform:translateY(-2px);border-color:#bfdbfe;background:#eff6ff}
+.exam-title{font-weight:900;font-size:17px;margin-bottom:4px}
+.exam-meta{color:var(--muted);font-size:14px}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin:22px 0 8px}
+@media(max-width:640px){.container{padding:14px}h1{font-size:24px}.grid{grid-template-columns:1fr}.hero{padding:22px 18px}}
 </style>
 </head>
 <body>
-<div class="card">
-<div class="progress">第 <span id="qno">1</span> / 2 題</div>
-<h3 id="question"></h3>
-<div id="options"></div>
+<div class="container">
+  <div class="hero">
+    <div class="brand">Kiwi學長</div>
+    <h1>AI應用規劃師歷屆題庫</h1>
+    <div class="subtitle">手機版一頁一題模擬考｜答題後立即顯示正確答案｜完成後統計分數與錯題回顧</div>
+  </div>
 
-<div id="feedback"></div>
+  <div class="section">
+    <h2>115 年第二次｜115.05.16</h2>
+    <div class="grid">
+      <a class="exam" href="1150516iPAS_AI Associate_subject1.html"><div class="exam-title">第一科：人工智慧基礎概論</div><div class="exam-meta">115 年第二次 AI 應用規劃師-初級【公告試題】</div></a>
+      <a class="exam" href="1150516iPAS_AI Associate_subject2.html"><div class="exam-title">第二科：生成式 AI 應用與規劃</div><div class="exam-meta">115 年第二次 AI 應用規劃師-初級【公告試題】</div></a>
+    </div>
+  </div>
 
-<button id="nextBtn" onclick="nextQuestion()" style="display:none">
-下一題 →
-</button>
+  <div class="section">
+    <h2>115 年第一次｜115.03.21</h2>
+    <div class="grid">
+      <a class="exam" href="1150321iPAS_AI Associate_subject1.html"><div class="exam-title">第一科：人工智慧基礎概論</div><div class="exam-meta">115 年第一次 AI 應用規劃師-初級【公告試題】</div></a>
+      <a class="exam" href="1150321iPAS_AI Associate_subject2.html"><div class="exam-title">第二科：生成式 AI 應用與規劃</div><div class="exam-meta">115 年第一次 AI 應用規劃師-初級【公告試題】</div></a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>114 年第四次｜114.11.01</h2>
+    <div class="grid">
+      <a class="exam" href="1141101iPAS_AI Associate_subject1.html"><div class="exam-title">第一科：人工智慧基礎概論</div><div class="exam-meta">114 年第四次 AI 應用規劃師-初級【公告試題】</div></a>
+      <a class="exam" href="1141101iPAS_AI Associate_subject2.html"><div class="exam-title">第二科：生成式 AI 應用與規劃</div><div class="exam-meta">114 年第四次 AI 應用規劃師-初級【公告試題】</div></a>
+    </div>
+  </div>
+
+  <div class="footer">© Kiwi學長｜AI應用規劃師線上題庫</div>
 </div>
-
-<script>
-const questions=[
-{
-q:"哪一種技術組合最符合輿情分析需求且不涉及個人身份辨識？",
-options:[
-"情感分析結合關鍵詞提取",
-"文本分類結合人臉辨識",
-"語音辨識結合影像辨識",
-"推薦系統結合社群圖譜分析"
-],
-answer:0
-},
-{
-q:"對機器學習方式的敘述何者有誤？",
-options:["A","B","C","D"],
-answer:3
-}
-];
-
-let current=0;
-
-function renderQuestion(){
-const q=questions[current];
-document.getElementById("qno").innerText=current+1;
-document.getElementById("question").innerText=q.q;
-
-let html="";
-q.options.forEach((opt,i)=>{
-html+=`<div class="option" onclick="checkAnswer(${i})">
-${String.fromCharCode(65+i)}. ${opt}
-</div>`;
-});
-document.getElementById("options").innerHTML=html;
-
-document.getElementById("feedback").style.display="none";
-document.getElementById("nextBtn").style.display="none";
-}
-
-function checkAnswer(choice){
-const q=questions[current];
-const feedback=document.getElementById("feedback");
-
-if(choice===q.answer){
-feedback.className="correct";
-feedback.innerHTML=`✅ 答對！<br>正確答案：${String.fromCharCode(65+q.answer)}`;
-}else{
-feedback.className="wrong";
-feedback.innerHTML=`❌ 答錯！<br>正確答案：${String.fromCharCode(65+q.answer)}`;
-}
-
-feedback.style.display="block";
-
-if(current<questions.length-1){
-document.getElementById("nextBtn").style.display="inline-block";
-}else{
-document.getElementById("nextBtn").innerText="測驗完成";
-document.getElementById("nextBtn").style.display="inline-block";
-}
-}
-
-function nextQuestion(){
-current++;
-if(current<questions.length){
-renderQuestion();
-}else{
-document.querySelector(".card").innerHTML=`
-<h2>🎉 測驗完成</h2>
-<p>這是手機版一頁一題雛形。</p>
-<p>下一版可加入：</p>
-<ul>
-<li>自動跳下一題</li>
-<li>解析區</li>
-<li>進度條</li>
-<li>錯題本</li>
-<li>成績統計</li>
-</ul>`;
-}
-}
-
-renderQuestion();
-</script>
 </body>
 </html>
