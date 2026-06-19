@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>114 年第四次 AI 應用規劃師-初級｜生成式 AI 應用與規劃</title>
+<style>
+:root {
+  --bg:#f5f7fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+  --primary:#2563eb; --primary-dark:#1d4ed8;
+  --success-bg:#dcfce7; --success:#166534;
+  --danger-bg:#fee2e2; --danger:#991b1b;
+  --border:#e5e7eb; --wrong-title:#be123c;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.7;
+}
+.container { width:100%; max-width:760px; margin:0 auto; padding:18px; }
+.card { background:var(--card); border-radius:20px; padding:22px; box-shadow:0 8px 24px rgba(15,23,42,.08); }
+.home-title { font-size:24px; line-height:1.35; margin:8px 0 12px; font-weight:800; }
+.home-subtitle { font-size:20px; font-weight:700; margin-bottom:6px; }
+.meta { color:var(--muted); font-size:15px; }
+.btn {
+  display:inline-flex; justify-content:center; align-items:center; width:100%; margin-top:16px; border:0; border-radius:14px;
+  padding:14px 18px; background:var(--primary); color:white; font-size:17px; font-weight:700; cursor:pointer;
+}
+.btn:hover { background:var(--primary-dark); }
+.btn.secondary { background:#eef2ff; color:#1e40af; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; color:var(--muted); font-size:15px; }
+.progress { height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:8px 0 18px; }
+.progress-inner { height:100%; background:var(--primary); width:0%; transition:width .25s ease; }
+.question-number { font-weight:800; color:#111827; }
+.question-stem { font-size:18px; font-weight:650; margin:14px 0 16px; white-space:pre-wrap; }
+.option {
+  width:100%; text-align:left; padding:14px 14px; margin:10px 0; border:1px solid var(--border); border-radius:14px;
+  background:#fff; color:var(--text); font-size:16px; line-height:1.65; white-space:pre-wrap; cursor:pointer;
+}
+.option:hover { border-color:#bfdbfe; background:#eff6ff; }
+.option.disabled { cursor:not-allowed; }
+.option.correct { border-color:#86efac; background:var(--success-bg); }
+.option.wrong { border-color:#fecaca; background:var(--danger-bg); }
+.feedback { display:none; margin-top:14px; padding:14px; border-radius:14px; font-weight:700; }
+.feedback.correct { display:block; background:var(--success-bg); color:var(--success); }
+.feedback.wrong { display:block; background:var(--danger-bg); color:var(--danger); }
+.result-title { font-size:26px; font-weight:900; margin:0 0 12px; }
+.result-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:14px 0 18px; }
+.stat { background:#f8fafc; border:1px solid var(--border); border-radius:14px; padding:12px; text-align:center; }
+.stat .num { font-size:24px; font-weight:900; }
+.stat .label { color:var(--muted); font-size:14px; }
+.wrong-card { border:1px solid var(--border); border-radius:16px; padding:15px; margin:12px 0; background:#fff; }
+.wrong-title { font-weight:900; margin-bottom:8px; color:var(--wrong-title); font-size:18px; }
+.wrong-stem { white-space:pre-wrap; font-weight:700; margin-bottom:12px; }
+.wrong-options { white-space:pre-wrap; }
+.answer-box { margin-top:14px; padding-top:12px; border-top:3px solid #ef4444; }
+.answer-line { margin-top:8px; font-weight:900; }
+.answer-line.correct-answer { color:#111827; }
+.hidden { display:none; }
+.footer-note { margin-top:14px; font-size:13px; color:var(--muted); text-align:center; }
+@media (max-width:480px) {
+  .container { padding:12px; }
+  .card { padding:18px; border-radius:18px; }
+  .home-title { font-size:21px; }
+  .home-subtitle { font-size:18px; }
+  .question-stem { font-size:17px; }
+  .option { font-size:15.5px; padding:13px; }
+  .result-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <section id="home" class="card">
+    <div class="home-title">114 年第四次 AI 應用規劃師-初級【公告試題】</div>
+    <div class="home-subtitle">生成式 AI 應用與規劃(114.11.01)</div>
+    <div class="meta">共 50 題｜單選題｜每題 2 分｜滿分 100 分</div>
+    <button class="btn" onclick="startQuiz()">開始測驗</button>
+    <div class="footer-note">答題後會立即顯示正確答案，最後統計分數與錯題。</div>
+  </section>
+
+  <section id="quiz" class="card hidden">
+    <div class="topbar">
+      <div><span class="question-number">第 <span id="currentNo">1</span> / 50 題</span></div>
+      <div>目前作答：<span id="answeredCount">0</span> 題</div>
+    </div>
+    <div class="progress"><div id="progressInner" class="progress-inner"></div></div>
+    <div id="questionStem" class="question-stem"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="btn hidden" onclick="nextQuestion()">下一題</button>
+  </section>
+
+  <section id="result" class="card hidden"></section>
+</div>
+
+<script>
+const questions = [{"number": 1, "answer": "B", "stem": "在Low Code 平台的開發應用設計中，關於「模型（Model）」，下列敘述\n何者最符合實際情況？", "options": [{"label": "A", "text": "(A)模型僅扮演設計視覺化的輔助工具，對應用邏輯的影響有限；"}, {"label": "B", "text": "(B)模型是用來抽象描述資料結構、業務流程與介面邏輯的核心元素，\n影響應用的設計與維護；"}, {"label": "C", "text": "(C)模型僅依循UML（Unified Modeling Language）等傳統建模方式，\n缺乏針對Low Code 環境的延展性；"}, {"label": "D", "text": "(D)模型在Low Code 平台中已被自動程式碼生成全面取代，實際價值\n有限"}]}, {"number": 2, "answer": "D", "stem": "企業在導入生成式AI 平台時，往往需要利用分散於不同部門或機構中\n的大量敏感文本資料。若希望在確保隱私的前提下，仍能讓模型持續優\n化並降低資料外洩風險，下列哪一種方法最適合？", "options": [{"label": "A", "text": "(A)同態加密（Homomorphic Encryption）；"}, {"label": "B", "text": "(B)安全多方計算（Secure Multi-party Computation）；"}, {"label": "C", "text": "(C)零知識證明（Zero-knowledge Proofs）；"}, {"label": "D", "text": "(D)聯邦學習（Federated Learning）"}]}, {"number": 3, "answer": "B", "stem": "某企業利用No Code/Low Code 平台開發內部營運系統。為確保系統在\n跨部門流程與外部服務整合下仍具良好的可測試性（Testability），下\n列哪一項作法最為合適？", "options": [{"label": "A", "text": "(A)依賴No Code/Low Code 平台提供的即時預覽與基本單元測試功能，\n快速驗證常見流程；"}, {"label": "B", "text": "(B)導入可重複執行的自動化測試流程，並透過 API 或服務虛擬化進\n行模組化驗證；"}, {"label": "C", "text": "(C)將測試聚焦於使用者介面互動與操作流程驗證，檢查系統表面功\n能；"}, {"label": "D", "text": "(D)依靠使用者回饋與正式上線後的監控資料，作為修正依據"}]}, {"number": 4, "answer": "A", "stem": "某社交平台嘗試結合自動提示工程（Automatic Prompt Engineer,\nAPE）與圖提示（Graph Prompting），讓AI 協助分析使用者之間的互動\n關係。在這個過程中，下列何者為最可能遇到的挑戰？", "options": [{"label": "A", "text": "(A)圖結構轉換為文字提示時，可能導致部分關聯資訊遺失；"}, {"label": "B", "text": "(B)APE 在圖資料上無法產生任何提示內容；"}, {"label": "C", "text": "(C)圖轉文字後能完整保留所有上下文，對推理不造成影響；"}, {"label": "D", "text": "(D)Graph Prompting 僅能處理線性路徑，限制多分支探索"}]}, {"number": 5, "answer": "D", "stem": "在超長上下文任務中使用自動提示工程（Automatic Prompt Engineer,\n題    目\nAPE）時，可能面臨的最大限制是什麼？", "options": [{"label": "A", "text": "(A)迭代優化難以因應上下文的不斷變動，導致調整失效；"}, {"label": "B", "text": "(B)模型的記憶容量有限，無法完整保留所有長篇資訊；"}, {"label": "C", "text": "(C)提示內容難以有效分解，無法支援複雜任務拆解；"}, {"label": "D", "text": "(D)回饋機制通常僅針對局部片段，難以全面評估最終輸出品質"}]}, {"number": 6, "answer": "B", "stem": "某設計團隊計畫在短時間內完成一款行動應用程式，必須同時達到高\n度個人化體驗、快速生成介面與行銷內容自動產出等需求。若結合 No\nCode/Low Code 平台與生成式AI 技術，以下哪一種整合策略最能符合\n目標？", "options": [{"label": "A", "text": "(A)使用生成式AI 自動產生API 呼叫與元件配置，並由開發者手動整\n合至No Code 平台流程；"}, {"label": "B", "text": "(B)透過生成式AI 在No Code 平台中自動建立介面模板，並結合使用\n者數據即時生成個人化功能與行銷推播內容；"}, {"label": "C", "text": "(C)在No Code 平台中導入生成式AI，快速建立跨專案可重用的通用模\n組，專注於提升開發速度；"}, {"label": "D", "text": "(D)在No Code 平台中完全依賴生成式AI 自動產生所有應用功能與流\n程，不經人工設計或驗證"}]}, {"number": 7, "answer": "C", "stem": "某團隊希望讓AI 自動查詢GitHub 上的程式碼庫，並生成摘要給使用\n者參考。開發者決定透過Model Context Protocol（MCP）來實現，AI\n需先發出請求，再經由MCP 架構逐步完成查詢與回傳。在此情境下，\nMCP 運作流程的正確順序為何？", "options": [{"label": "A", "text": "(A)MCP Server→AI Host→MCP Client→資料查詢→結果回傳AI\nHost；"}, {"label": "B", "text": "(B)MCP Client→AI Host→MCP Server→資料查詢→結果回傳AI\nHost；"}, {"label": "C", "text": "(C)AI Host→MCP Client→ MCP Server→資料查詢→結果回傳AI\nHost；"}, {"label": "D", "text": "(D)AI Host→MCP Server→MCP Client→資料查詢→結果回傳AI Host"}]}, {"number": 8, "answer": "C", "stem": "在Agent-to-Agent（A2A）架構中，不同代理人之間會分工合作。一般\n而言，下列敘述何者最符合Client Agent 與Remote Agent 的互動流\n程？", "options": [{"label": "A", "text": "(A)Remote Agent 主動分派任務給Client Agent；"}, {"label": "B", "text": "(B)由人工事先設定Client Agent 與Remote Agent 處理任務的先後順\n序；\n題    目"}, {"label": "C", "text": "(C)Client Agent 發起任務，Remote Agent 執行並回傳結果；"}, {"label": "D", "text": "(D)Client Agent 與Remote Agent 同時處理任務並同步處理結果"}]}, {"number": 9, "answer": "B", "stem": "在導入生成式AI 的應用規劃中，上下文工程（Context Engineering）\n的核心目的為何？", "options": [{"label": "A", "text": "(A)縮短模型訓練時間；"}, {"label": "B", "text": "(B)優化提示與上下文；"}, {"label": "C", "text": "(C)增加模型參數數量；"}, {"label": "D", "text": "(D)優化Fine-tuning 正確率"}]}, {"number": 10, "answer": "B", "stem": "某公司在導入生成式AI 協助撰寫內部報告時，測試人員刻意在輸入的\n上下文中放入互相矛盾的資訊（例如：同一位員工在不同段落被描述為\n「入職三年」與「入職五年」）。在這種情況下，最常見的模型行為會是\n什麼？", "options": [{"label": "A", "text": "(A)永遠選擇第一段資訊作為答案依據；"}, {"label": "B", "text": "(B)可能生成幻覺或隨機採信其中一方的內容；"}, {"label": "C", "text": "(C)拒絕回答，並要求提供更一致的輸入；"}, {"label": "D", "text": "(D)自動判斷並只選擇正確的資訊"}]}, {"number": 11, "answer": "A", "stem": "Agentic AI 在解決方案圖譜（Solution Graph）上尋找最佳解決路徑\n時，通常會使用什麼樣的搜尋策略？", "options": [{"label": "A", "text": "(A)使用廣度優先、深度優先或最佳優先等演算法進行探索；"}, {"label": "B", "text": "(B)每一步都隨機選擇動作，反覆嘗試直到找到一條可行路徑；"}, {"label": "C", "text": "(C)只執行事先假定的一條路徑，失敗就停止；"}, {"label": "D", "text": "(D)完全依靠LLM 一次性推斷最優完整路徑"}]}, {"number": 12, "answer": "C", "stem": "某企業考慮將開源大型語言模型（GPT-OSS）自行部署在本地伺服器，\n以取代雲端服務。下列何者最能代表本地部署對企業的實際好處？", "options": [{"label": "A", "text": "(A)可以達到無運算成本，因為本地部署模型不會產生額外的資源消\n耗；"}, {"label": "B", "text": "(B)模型的預測能力會比在雲端運行時更精度，因為本地環境更加可\n靠；"}, {"label": "C", "text": "(C)可確保輸入模型的敏感資料不會傳輸給第三方，提升資料隱私和自\n主控制；"}, {"label": "D", "text": "(D)以上皆是"}]}, {"number": 13, "answer": "D", "stem": "關於GitHub Copilot，下列敘述何者正確？", "options": [{"label": "A", "text": "(A)GitHub Copilot 基於程式碼片段查詢工具，透過後端搜尋大型程式\n碼資料庫提供建議；\n題    目"}, {"label": "B", "text": "(B)GitHub Copilot 僅適用於GitHub 上的開源專案，無法在私有程式\n碼庫或本地環境中提供程式碼補全建議；"}, {"label": "C", "text": "(C)GitHub Copilot 利用靜態分析技術分析程式碼，根據邏輯流程推導\n下一步應寫的程式碼；"}, {"label": "D", "text": "(D)GitHub Copilot 由OpenAI 的Codex 模型提供技術支援，可即時在\n開發者編輯程式碼時給出整行或整個函式建議"}]}, {"number": 14, "answer": "B", "stem": "某電商公司導入Agentic AI 來處理客服工作。測試發現Agent 在回答\n產品FAQ 時經常出錯，且無法幫客戶修改訂單。這種情況最可能是因\n為缺少下列哪兩項工具或技術？", "options": [{"label": "A", "text": "(A)API 調用（API Calling）＋ 任務規劃器（Task Planner）；"}, {"label": "B", "text": "(B)向量資料庫檢索（Vector Retrieval）＋API 調用（API Calling）；"}, {"label": "C", "text": "(C)向量資料庫檢索（Vector Retrieval）＋任務規劃器（Task\nPlanner）；"}, {"label": "D", "text": "(D)任務規劃器（Task Planner）＋溫度參數（Temperature）設定"}]}, {"number": 15, "answer": "B", "stem": "某客服自動回應系統希望根據不同客戶群體調整回覆風格。在兼顧即\n時性與效果的前提下，下列哪一種方案最適合？", "options": [{"label": "A", "text": "(A)直接微調預訓練模型針對每個客戶群體分別訓練不同風格模型；"}, {"label": "B", "text": "(B)利用控制變量（Control Tokens）或風格標籤在同一模型內動態調\n整風格；"}, {"label": "C", "text": "(C)利用生成對抗網路（GAN）生成不同風格文本，並透過人工篩選最終\n答案；"}, {"label": "D", "text": "(D)採用規則式替換方法，替換回覆詞彙以符合不同風格要求。"}]}, {"number": 16, "answer": "D", "stem": "在建置多代理大型語言模型（Multi-agent LLMs）系統時，如果沒有清\n楚定義每個代理的任務啟動條件和角色分工，最可能出現什麼問題？", "options": [{"label": "A", "text": "(A)回覆內容前後不連貫，系統邏輯斷裂；"}, {"label": "B", "text": "(B)不同代理的答案互相衝突，無法判斷最終決策；"}, {"label": "C", "text": "(C)系統陷入無限對話循環，導致資源耗盡；"}, {"label": "D", "text": "(D)多個代理重複做同樣的任務，造成效率低落"}]}, {"number": 17, "answer": "D", "stem": "某公司部署結合 Fine-tuning 與檢索增強生成（RAG）的語言模型系統\n作為內部文件助理。系統需同時確保回覆語氣一致、能即時查詢每日新\n增文件、維持效能穩定，並避免頻繁重新訓練。在長期維護與效能平衡\n下，下列哪一種策略最合適？", "options": [{"label": "A", "text": "(A)每週重新Fine-tune 模型，將新文件整合進模型知識，逐步取代RAG\n模組；\n題    目"}, {"label": "B", "text": "(B)完全依靠基礎模型與RAG，不進行Fine-tune，僅透過提示設計控\n制語氣；"}, {"label": "C", "text": "(C)每日進行增量Fine-tune，讓模型即時學習新文件內容，避免依賴\n檢索；"}, {"label": "D", "text": "(D)保留語氣相關Fine-tuning，僅透過檢索系統更新文件內容，不頻\n繁改動模型"}]}, {"number": 18, "answer": "D", "stem": "某客服系統在回覆「訂單取消政策」時，即使生成溫度固定為 0.6，回\n覆品質仍常出現差異。調查顯示，檢索到的政策內容有時是最新版本，\n有時則是過時文件，此外Prompt 約束不足，微調語料也有模糊描述。\n若要優先改善品質波動，應先解決下列哪一項問題？", "options": [{"label": "A", "text": "(A)調整溫度參數，降低生成隨機性；"}, {"label": "B", "text": "(B)加強Prompt 設計，限制模型表達方式；"}, {"label": "C", "text": "(C)優化微調語料，減少含糊描述；"}, {"label": "D", "text": "(D)提升檢索系統品質，確保取得的政策內容正確且最新"}]}, {"number": 19, "answer": "B", "stem": "某醫院導入了一套智慧系統，由三個模組構成：語音辨識（ASR） → 語\n言模型生成（LLM） → 查詢醫療資料庫 API。近期發現部分查詢結果\n錯誤，例如醫師詢問「術後復健流程」時，系統卻誤判為要查詢「術前\n注意事項」，因此查詢到錯誤的文件。經檢查已排除語音辨識的錯誤，\n下列何者最可能是造成查詢錯誤的來源？", "options": [{"label": "A", "text": "(A)醫療資料庫API 對應規則設計不清，造成意圖映射模糊；"}, {"label": "B", "text": "(B)LLM 的Prompt 缺乏明確指示，導致語意分類判斷錯誤；"}, {"label": "C", "text": "(C)查詢API 回傳速度過慢，影響系統處理正確性；"}, {"label": "D", "text": "(D)LLM 未經醫療領域微調，難以正確理解專業性詞彙"}]}, {"number": 20, "answer": "D", "stem": "某醫院正在規劃一個AI 專案，目的是協助醫師從胸腔X 光影像中判斷\n是否存在肺炎徵兆，團隊卻誤將生成式 AI 模型運用於影像診斷。下列\n哪一項最可能成為主要風險？", "options": [{"label": "A", "text": "(A)模型在生成報告時語句流暢，但僅在文字表達上有差異，對診斷結\n果沒有重大影響；"}, {"label": "B", "text": "(B)模型若資料不足，僅會降低生成報告的完整性，而非影響判斷病灶\n的正確性；"}, {"label": "C", "text": "(C)模型偏向生成內容而非分類，但此差異僅影響效率，不會造成誤診\n風險；"}, {"label": "D", "text": "(D)模型可能生成與實際影像不符的診斷結論，導致誤判並引發醫療與\n法律風險\n題    目"}]}, {"number": 21, "answer": "A", "stem": "某公司開發的智慧車載語音助理，可透過語音辨識（ASR）辨識駕駛語\n音，再由LLM 生成回答並查詢車載 API。測試中發現：ASR 對汽車專\n業術語辨識錯誤率高；LLM 的回覆常不精確；系統回覆延遲雖存在但仍\n可接受。若目標是「優先提升準確性與回答品質」，下列改進步驟的最\n合理執行順序為何？\n1. 擴充並標註汽車領域語音資料，微調 ASR 模型\n2. 微調 LLM 並加入檢索增強（RAG）\n3. 優化系統架構，引入批次推論降低延遲\n4. 動態調整生成溫度，平衡準確度與多樣性", "options": [{"label": "A", "text": "(A)1 → 2 → 4 → 3；"}, {"label": "B", "text": "(B)2 → 1→ 3 → 4；"}, {"label": "C", "text": "(C)1 → 3 → 2 → 4；"}, {"label": "D", "text": "(D)3 → 1 → 2 → 4"}]}, {"number": 22, "answer": "C", "stem": "一家顧問公司使用生成式AI 協助撰寫數據分析報告。雖然模型在測試\n中表現優異，但其生成的報告多半僅遵循固定段落結構，替換數值或關\n鍵詞即可完成，卻未能展現針對不同專案的多樣化推理與分析。下列何\n者為造成這種現象的最合理解釋？", "options": [{"label": "A", "text": "(A)模型在生成過程中缺乏對字體與排版的優化能力，因此無法展現分\n析邏輯；"}, {"label": "B", "text": "(B)測試資料涵蓋過多統計圖表，導致模型無法專注於文字內容的多樣\n化表達；"}, {"label": "C", "text": "(C)模型過度依賴訓練語料中的常見報告範式，導致生成結果以樣板化\n結構取代真正的推理；"}, {"label": "D", "text": "(D)模型因無法正確辨識報告中的頁碼與標題層級，才出現樣板化的結\n果"}]}, {"number": 23, "answer": "D", "stem": "在應用零樣本提示（Zero-Shot Prompting）時，下列哪一種情境最可\n能因缺乏示範而失敗，出現語意錯誤或結構錯誤的輸出？", "options": [{"label": "A", "text": "(A)要求模型判斷一段影評文字的情感傾向；"}, {"label": "B", "text": "(B)要求模型將一段新聞摘要濃縮為一句話；"}, {"label": "C", "text": "(C)要求模型將一段繁體中文翻譯成英文；"}, {"label": "D", "text": "(D)要求模型從表格中擷取所有城市的最高氣溫"}]}, {"number": 24, "answer": "D", "stem": "某保險公司計畫導入生成式AI 的內部合約查詢系統，協助業務員與法\n務部門快速解讀保單條款與理賠規範。高層特別強調客戶資料隱私與\n合規風險控管，即使需要投入較多資源，也必須確保資料不會外洩。在\n題    目\n此情況下，下列哪一種策略最符合公司的資料安全與合規優先考量？", "options": [{"label": "A", "text": "(A)導入開源模型並由IT 團隊自建，後續再逐步補強隱私與合規控管；"}, {"label": "B", "text": "(B)在需求確認階段即納入法遵與稽核單位，設定準確率KPI，並透過\nMVP 驗證成效；"}, {"label": "C", "text": "(C)優先使用雲端大型API 模型快速部署，並根據使用數據持續調整；"}, {"label": "D", "text": "(D)投入資源自訓並私有化部署LLM，並同步建立自動化風控機制"}]}, {"number": 25, "answer": "B", "stem": "某新創公司開發一套圖像描述生成系統，能根據輸入的照片自動產生\n說明文字。為了讓產生的描述文字能與圖片資訊精準對應，下列哪一種\n設計思路最關鍵？", "options": [{"label": "A", "text": "(A)強化語言模型的句法與流暢性，確保生成文字更自然易讀；"}, {"label": "B", "text": "(B)在生成過程中結合圖片特徵與語言建模，讓模型同時利用影像內容\n與文字資訊；"}, {"label": "C", "text": "(C)調整生成策略（如 Beam Search 或溫度參數），以提升輸出文字的\n合理性；"}, {"label": "D", "text": "(D)專注於文字序列上下文的建模，只提升文字間的連貫性"}]}, {"number": 26, "answer": "C", "stem": "某電商平台希望生成的商品描述在風格與用詞上保持一致性，但不需\n要新增專業知識。下列哪種方法最適合？", "options": [{"label": "A", "text": "(A)擴充語料庫並微調模型，使風格統一；"}, {"label": "B", "text": "(B)增加提示詞複雜度，引導模型風格一致；"}, {"label": "C", "text": "(C)降低生成溫度，以減少隨機性並提升風格一致性；"}, {"label": "D", "text": "(D)使用全連接神經網路對生成結果後期篩選"}]}, {"number": 27, "answer": "C", "stem": "某企業已建置AI 語音記錄系統，並希望整合生成式AI 進行「會議即\n時摘要」功能，下列哪一種策略最能提升摘要的語意品質與使用價值？", "options": [{"label": "A", "text": "(A)使用語音轉文字模型即時輸出逐字稿並轉入GPT 摘要；"}, {"label": "B", "text": "(B)將語音逐段切分並建立關鍵字索引，以利摘要模型從中擷取核心內\n容生成會議重點；"}, {"label": "C", "text": "(C)將語音轉文字後標註發言角色與主題邊界，結合語意分群進行動態\n摘要；"}, {"label": "D", "text": "(D)將所有語音內容儲存為完整紀錄，提供事後人工摘要比對用"}]}, {"number": 28, "answer": "B", "stem": "某公司正在開發一個智慧客服系統，負責回覆顧客關於退換貨、優惠活\n動與商品建議等問題。研發團隊嘗試使用不同的提示設計方式來提升\n模型效能。下列哪一個提示最符合「少樣本提示（Few-Shot Prompting）」\n的設計原則？", "options": [{"label": "A", "text": "(A)「請回答顧客詢問：如何申請退貨？」；\n題    目"}, {"label": "B", "text": "(B)「以下是兩組客服對話範例，請依照相同風格回覆新的顧客問題」；"}, {"label": "C", "text": "(C)「請逐步分析顧客投訴的原因，並依照推理過程生成合適回覆」；"}, {"label": "D", "text": "(D)「請以正式的語氣回覆顧客的提問」"}]}, {"number": 29, "answer": "C", "stem": "某投資公司導入生成式 AI，用於即時分析股市波動並提供市場背景資\n訊。若希望AI 能兼顧「即時性」與「可靠性」。下列哪一項設計最能有\n效提升AI 在即時股市分析上的表現？", "options": [{"label": "A", "text": "(A)將AI 系統連結至公司內部歷史交易資料庫，以便快速調用既有的\n案例參考；"}, {"label": "B", "text": "(B)調整模型的回應邏輯，讓AI 優先輸出最新市場行情，而不是完整\n的背景分析；"}, {"label": "C", "text": "(C)建立與外部即時行情來源同步的查詢模組，確保AI 能即時擷取最\n新金融數據；"}, {"label": "D", "text": "(D)增加訓練資料中模擬的金融危機與市場異常案例，以提升AI 在特\n殊情境下的表現能力"}]}, {"number": 30, "answer": "A", "stem": "某大型物流公司計畫導入AI 系統，以改善客服與配送作業的效率。專\n案團隊規劃了以下四個步驟，請問正確的執行順序為何？\n1. 建立符合公司服務流程的AI 對話邏輯與應答範本，確保顧客體驗\n一致\n2. 明確定義導入AI 的目標並設定關鍵績效指標（KPI）\n3. 蒐集與清理過往客服紀錄與配送相關資料，作為模型訓練素材\n4. 評估並選擇合適的AI 技術供應商或開源方案，確立技術方向與架\n構", "options": [{"label": "A", "text": "(A)2 → 3 → 4 → 1；"}, {"label": "B", "text": "(B)3 → 2 → 1 → 4；"}, {"label": "C", "text": "(C)2 → 1 → 3 → 4；"}, {"label": "D", "text": "(D)1 → 4 → 3 → 2"}]}, {"number": 31, "answer": "B", "stem": "某跨國電商企業導入生成式AI，協助處理顧客服務請求，並根據顧客\n歷史訂單提供個人化建議。資安與法遵部門擔心AI 在回覆時可能洩漏\n顧客個資，若要在導入初期優先避免觸法風險，下列哪一項措施最符合\n要求？", "options": [{"label": "A", "text": "(A)在加密環境下導入完整的顧客訂單與行為資料，並透過嚴格存取控\n管降低洩漏風險；"}, {"label": "B", "text": "(B)實施資料最小化與去識別化，確保AI 在訓練與生成過程中不直接\n處理或暴露敏感個資；\n題    目"}, {"label": "C", "text": "(C)強化模型的回覆審查流程，透過自動過濾與人工抽查結合，降低個\n資外洩的機率；"}, {"label": "D", "text": "(D)設定AI 的角色與回覆範圍，讓其專注於客服相關內容，避免回答\n其他敏感議題"}]}, {"number": 32, "answer": "A", "stem": "某國際銀行導入生成式AI，用於彙整不同國家金融監管機構的合規規\n範，建立跨國合規知識庫。由於各國條文表述方式不同，且監管要求具\n有高度專業性與隱含邏輯，若要確保知識庫在後續查詢與生成報告時\n能維持正確性與一致性，下列哪一項AI 能力最為關鍵？", "options": [{"label": "A", "text": "(A)具備跨語言專業術語對齊與條文語意抽取能力，能正確辨識不同國\n家規範間的對應與差異；"}, {"label": "B", "text": "(B)能自動最佳化文件檢索效率，縮短跨國法規查詢的延遲時間，提升\n合規部門使用體驗；"}, {"label": "C", "text": "(C)能將合規文件轉換為多種輸出形式（如簡報、摘要或法規清單），以\n符合不同決策層級需求；"}, {"label": "D", "text": "(D)具備根據歷史案例生成合規解釋的能力，協助新進員工快速理解法\n規在實務上的應用"}]}, {"number": 33, "answer": "C", "stem": "在企業導入MLOps（Machine Learning Operations）的過程中，除了\n模型部署與維運挑戰外，仍可能面臨其他推動上的困難。下列何者為\nNo Code 平台最能有效解決的挑戰？", "options": [{"label": "A", "text": "(A)自動化大量資料的標註與前處理，以降低數據準備成本；"}, {"label": "B", "text": "(B)提升運算基礎設施的可擴展性，以因應大規模服務需求；"}, {"label": "C", "text": "(C)透過可視化建模介面，降低技術門檻並促進跨部門協作；"}, {"label": "D", "text": "(D)提供進階特徵工程能力，優化高維度數據的處理效率"}]}, {"number": 34, "answer": "B", "stem": "某醫療機構計畫導入生成式AI 協助撰寫病歷摘要。在技術測試階段，\n為確保系統能安全應用於臨床，最應優先關注下列哪一項指標？", "options": [{"label": "A", "text": "(A)資料儲存與存取架構的完整性，確保長期運作過程中的數據可追溯\n性；"}, {"label": "B", "text": "(B)生成內容的醫療準確性與臨床一致性，避免出現錯誤或誤導性資\n訊；"}, {"label": "C", "text": "(C)模型在不同病例語境下的泛化能力，確保不因個別樣本而偏差；"}, {"label": "D", "text": "(D)系統回應時間的穩定性，以支援醫療場域中可能的即時需求"}]}, {"number": 35, "answer": "B", "stem": "在即時客服系統的效能測試中，若針對延遲測試（Latency Testing）\n進行評估，下列哪一項指標最能反映系統是否符合用戶即時互動需\n求？\n題    目", "options": [{"label": "A", "text": "(A)AI 模型在同一分鐘內可完成的回覆訊息數量；"}, {"label": "B", "text": "(B)客戶從輸入問題到收到第一個完整回應所需的時間；"}, {"label": "C", "text": "(C)客服系統能連續提供服務的運行時長；"}, {"label": "D", "text": "(D)AI 產生回答時用詞的多樣性與表達創意程度"}]}, {"number": 36, "answer": "A", "stem": "某航空公司導入生成式AI 聲控客服，提供航班與票務查詢。有人員透\n過惡意提示，試圖讓系統洩漏內部安檢流程。在此情境中，下列何者為\n降低提示攻擊（Prompt Injection）風險的最佳策略？", "options": [{"label": "A", "text": "(A)導入輸入檢測與回應審核流程，防止敏感指令被執行；"}, {"label": "B", "text": "(B)限制AI 可回應的主題範圍，使系統僅回答非敏感的航班與票務查\n詢，避免處理內部或敏感流程資訊；"}, {"label": "C", "text": "(C)隨機變化回覆內容，讓攻擊者難以預測回應行為以增加攻擊難度；"}, {"label": "D", "text": "(D)擴充與更新航班與票務資料來源，以提升模型的知識正確性與覆蓋\n率"}]}, {"number": 37, "answer": "A", "stem": "在機器學習模型的實務應用中，常會出現數據漂移（Data Drift）的情\n況。此現象主要是指下列哪一種情況？", "options": [{"label": "A", "text": "(A)訓練時使用的資料分佈，與部署後實際輸入資料的統計特徵隨時間\n逐漸出現差異，導致模型表現衰退；"}, {"label": "B", "text": "(B)在資料前處理過程中，因特徵刪減或缺失補值不當，造成樣本資訊\n量下降；"}, {"label": "C", "text": "(C)模型對訓練數據擬合過度，在未知數據上泛化能力不足；"}, {"label": "D", "text": "(D)後端資料庫因欄位定義或結構調整，導致特徵提取流程與原始設計\n不一致"}]}, {"number": 38, "answer": "C", "stem": "某銀行導入生成式AI 放貸審核系統，用於分析申貸人條件並生成初步\n審核意見。測試過程中發現，模型對不同族群的核准率存在顯著差異，\n可能引發演算法偏見問題。為降低此風險，下列哪一項措施最合適？", "options": [{"label": "A", "text": "(A)提升模型運算速度與效能，以確保在大量申請中快速回應；"}, {"label": "B", "text": "(B)全面移除與申貸人身份相關的敏感屬性，避免模型因變數影響而產\n生偏差；"}, {"label": "C", "text": "(C)導入資料與結果的公平性檢測流程，並依合規規範調整模型或決策\n邏輯；"}, {"label": "D", "text": "(D)減少訓練樣本數量，降低偏見被放大的可能性"}]}, {"number": 39, "answer": "A", "stem": "在提示工程（Prompt Engineering）的應用中，Chain-of-Thought（CoT）\n與Tree of Thoughts（ToT）各適用於不同的推理情境，請問以下兩個\n情境，分別最適合採用哪一種方法？\n題    目\n情境一：電商公司開發客服助理，用來協助客戶查詢退款流程與相關規\n範\n情境二：活動策劃團隊使用AI 協助規劃多場跨部門行銷活動，需要同\n時考量預算、場地、時程與人力資源，並比較不同方案的可行性。", "options": [{"label": "A", "text": "(A)情境一採用CoT，情境二採用ToT；"}, {"label": "B", "text": "(B)情境一採用ToT，情境二採用CoT；"}, {"label": "C", "text": "(C)情境一與情境二都適合CoT；"}, {"label": "D", "text": "(D)情境一與情境二都適合ToT"}]}, {"number": 40, "answer": "D", "stem": "在生成式AI 的提示工程中，Graph Prompting 在處理複雜關係資料時，\n為何通常比Chain-of-Thought（CoT）更有效？", "options": [{"label": "A", "text": "(A)Graph Prompting 幾乎不需要推理，只依靠圖結構即可得出結論；"}, {"label": "B", "text": "(B)Graph Prompting 僅需單次提示，即可避免多輪推理的誤差累積；"}, {"label": "C", "text": "(C)Graph Prompting 的生成速度通常更快，因此效率更高；"}, {"label": "D", "text": "(D)Graph Prompting 能捕捉非線性結構與上下文關聯，適合處理網絡\n化資訊"}]}, {"number": 41, "answer": "A", "stem": "在少樣本提示（Few-shot Prompting）僅能提供 1–2 個範例的情況\n下，若遇到領域偏移（Domain Shift），下列何者為模型最可能面臨的\n核心挑戰？", "options": [{"label": "A", "text": "(A)範例數量過少，無法涵蓋新領域的多樣性，導致模型泛化不足；"}, {"label": "B", "text": "(B)範例表徵有限，模型容易依賴單一樣本特性而降低適應力；"}, {"label": "C", "text": "(C)範例覆蓋不足，使模型難以抽取跨領域的穩定模式；"}, {"label": "D", "text": "(D)範例資訊過於稀缺，模型缺乏應對不同輸入情境的能力"}]}, {"number": 42, "answer": "A", "stem": "某金融機構導入檢索增強生成（Retrieval-Augmented Generation,\nRAG）模型，用於客服文件查詢與自動回覆。由於大型模型運算成本過\n高，若考慮引入知識蒸餾（Knowledge Distillation, KD）技術，下列\n何者為帶來的主要效益？", "options": [{"label": "A", "text": "(A)讓小型模型學習大型模型的知識，在降低運算成本的同時維持檢索\n與生成品質；"}, {"label": "B", "text": "(B)只能應用於語音或影像辨識，無法提升文字檢索生成效能；"}, {"label": "C", "text": "(C)因為RAG 已有檢索機制，因此無需額外蒸餾知識；"}, {"label": "D", "text": "(D)僅能依賴特定 API 供應商才能使用，無法在自建模型中實現"}]}, {"number": 43, "answer": "D", "stem": "在評估大型語言模型，例如7B、13B、175B 參數規模時，模型規模對基\n準測試（Benchmark）結果的影響，下列哪一種說法最為恰當？", "options": [{"label": "A", "text": "(A)小模型在正確調整下能超越大模型，因此模型大小並不重要；\n題    目"}, {"label": "B", "text": "(B)大模型在多數情境下表現較好，但在特定任務上略遜於小模型；"}, {"label": "C", "text": "(C)模型規模與基準測試結果完全無關，影響主要來自測試設計；"}, {"label": "D", "text": "(D)模型越大，Benchmark 結果可能提升，但幅度取決於訓練數據品質\n與資源配置"}]}, {"number": 44, "answer": "C", "stem": "在AI 應用設計中，Model Context Protocol（MCP）與檢索增強生成\n（RAG）都能擴展模型的能力，但兩者的核心差異主要為下列何者？", "options": [{"label": "A", "text": "(A)MCP 擴展模型工具，但主要用於補足訓練資料不足；"}, {"label": "B", "text": "(B)MCP 能標準化連接資源，但仍需依賴向量資料庫；"}, {"label": "C", "text": "(C)RAG 常用於擴展知識庫內容，而MCP 更著重於動態工具與API 呼叫\n的整合；"}, {"label": "D", "text": "(D)RAG 透過統一協議，提升回答相關性"}]}, {"number": 45, "answer": "A", "stem": "下列哪一個資料集專門設計用於測試大型語言模型在多領域、多任務\n語言理解中，涵蓋人文、科學與社會科學等領域，而非專門用於數學推\n理或中文專業知識？", "options": [{"label": "A", "text": "(A)MMLU；"}, {"label": "B", "text": "(B)GSM8K；"}, {"label": "C", "text": "(C)MATH；"}, {"label": "D", "text": "(D)C-Eval"}]}, {"number": 46, "answer": "D", "stem": "某智慧工廠導入生成式AI，協助產線工程師即時產生維修指引與操作\n建議。下列哪一項並非團隊在系統設計中加入Guardrails（防護機制）\n的主要目的？", "options": [{"label": "A", "text": "(A)檢查工程師輸入內容，避免觸發錯誤或危險需求；"}, {"label": "B", "text": "(B)過濾與驗證AI 輸出的維修指引，確保符合安全標準；"}, {"label": "C", "text": "(C)確保生成的操作建議符合法規與產業安全規範；"}, {"label": "D", "text": "(D)完整重建並追蹤 AI 模型的全部推理過程"}]}, {"number": 47, "answer": "B", "stem": "某顧問公司導入生成式AI，協助團隊快速檢索並摘要長篇的法規文件。\n為了改善檢索結果常出現不相關或過於分散內容的問題，下列何者為\n團隊決定對文件進行文本切分（Chunking）的主要目的？", "options": [{"label": "A", "text": "(A)讓模型在回答時能加快推理速度；"}, {"label": "B", "text": "(B)提高檢索相關性與降低長上下文噪音；"}, {"label": "C", "text": "(C)降低系統記憶體和硬體資源的負擔；"}, {"label": "D", "text": "(D)使模型在生成回覆時更具創造性與多樣化"}]}, {"number": 48, "answer": "A", "stem": "某開發團隊在建置企業內部知識檢索系統時，選擇採用多向量檢索器\n（Multi-vector Retriever），下列何者為協助提升系統查詢的完整性\n題    目\n與精準度的主要方式？", "options": [{"label": "A", "text": "(A)支援同時處理多種資訊表示，提升跨文本型態的檢索效果；"}, {"label": "B", "text": "(B)透過多向量壓縮與共享權重方式，降低檢索過程的運算與儲存成\n本；"}, {"label": "C", "text": "(C)以切分並過濾文件片段，減少上下文長度帶來的Token 負擔；"}, {"label": "D", "text": "(D)透過調整生成階段的溫度參數，使模型在回覆時更穩定一致"}]}, {"number": 49, "answer": "D", "stem": "在Agentic AI 的架構中，解決方案圖譜（Solution Graph）常被用來\n輔助代理的任務執行，其主要作用為何？", "options": [{"label": "A", "text": "(A)透過圖形結構完全取代大型語言模型的推理，讓代理只依靠圖演算\n法完成任務；"}, {"label": "B", "text": "(B)僅用於保存代理的輸出結果，方便後續檢視與審計，而不影響實際\n推理流程；"}, {"label": "C", "text": "(C)將代理限制在既定流程內，避免其產生偏離設計腳本的行為；"}, {"label": "D", "text": "(D)作為代理在執行過程中的參考框架，用於組織決策步驟並支援任務\n推理"}]}, {"number": 50, "answer": "C", "stem": "小明想開發一個部落格寫作工具，讓用戶輸入文章開頭後，系統自動幫\n忙寫出後續內容，例如輸入「今天去了台北木柵動物園...」，系統就能\n續寫。若要實現這樣的功能，最適合選擇下列哪一類任務？", "options": [{"label": "A", "text": "(A)序列到序列建模（Sequence-to-Sequence Modeling），透過輸入序\n列產生新的輸出序列；"}, {"label": "B", "text": "(B)遮罩語言建模（Masked Language Modeling），補齊文字中缺失的\n詞語或片段；"}, {"label": "C", "text": "(C)生成式語言建模（Text Generation），依據上下文持續產生新的內\n容；"}, {"label": "D", "text": "(D)文本分類（Text Classification），針對輸入文本判斷情感、主題\n或標籤\n《以下空白》"}]}];
+let currentIndex = 0;
+let userAnswers = Array(questions.length).fill(null);
+let locked = false;
+
+function show(id) {
+  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function startQuiz() {
+  currentIndex = 0;
+  userAnswers = Array(questions.length).fill(null);
+  locked = false;
+  show("quiz");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  locked = false;
+  const q = questions[currentIndex];
+  document.getElementById("currentNo").textContent = currentIndex + 1;
+  document.getElementById("answeredCount").textContent = userAnswers.filter(x => x !== null).length;
+  document.getElementById("progressInner").style.width = ((currentIndex + 1) / questions.length * 100) + "%";
+  document.getElementById("questionStem").textContent = q.stem;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt.text;
+    btn.onclick = () => chooseAnswer(opt.label);
+    optionsDiv.appendChild(btn);
+  });
+
+  const feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+}
+
+function chooseAnswer(label) {
+  if (locked) return;
+  locked = true;
+  const q = questions[currentIndex];
+  userAnswers[currentIndex] = label;
+
+  const buttons = document.querySelectorAll(".option");
+  buttons.forEach(btn => {
+    btn.classList.add("disabled");
+    const optionLabel = btn.textContent.trim().charAt(1);
+    if (optionLabel === q.answer) btn.classList.add("correct");
+    if (optionLabel === label && label !== q.answer) btn.classList.add("wrong");
+  });
+
+  const feedback = document.getElementById("feedback");
+  if (label === q.answer) {
+    feedback.className = "feedback correct";
+    feedback.textContent = "✅ 答對！正確答案：" + getAnswerText(q);
+  } else {
+    feedback.className = "feedback wrong";
+    feedback.textContent = "❌ 答錯！正確答案：" + getAnswerText(q);
+  }
+
+  const nextBtn = document.getElementById("nextBtn");
+  nextBtn.textContent = currentIndex === questions.length - 1 ? "查看成績" : "下一題";
+  nextBtn.classList.remove("hidden");
+}
+
+function nextQuestion() {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function getAnswerText(q) {
+  const found = q.options.find(o => o.label === q.answer);
+  return found ? found.text : q.answer;
+}
+
+function getUserAnswerText(q, label) {
+  if (!label) return "未作答";
+  const found = q.options.find(o => o.label === label);
+  return found ? found.text : label;
+}
+
+function showResult() {
+  let correct = 0;
+  const wrongs = [];
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.answer) correct++;
+    else wrongs.push({ q, userAnswer: userAnswers[i] });
+  });
+
+  const wrong = questions.length - correct;
+  const score = correct * 2;
+
+  let html = `
+    <div class="result-title">測驗完成</div>
+    <div class="result-grid">
+      <div class="stat"><div class="num">${score}</div><div class="label">分數</div></div>
+      <div class="stat"><div class="num">${correct}</div><div class="label">答對</div></div>
+      <div class="stat"><div class="num">${wrong}</div><div class="label">答錯</div></div>
+    </div>
+  `;
+
+  if (wrongs.length === 0) {
+    html += `<p>🎉 全部答對，太厲害了！</p>`;
+  } else {
+    html += `<h3>錯題回顧</h3>`;
+    wrongs.forEach(item => {
+      const q = item.q;
+      const optionsText = q.options.map(o => o.text).join("\n\n");
+      html += `
+        <div class="wrong-card">
+          <div class="wrong-title">第 ${q.number} 題</div>
+          <div class="wrong-stem">${escapeHtml(q.stem)}</div>
+          <div class="wrong-options">${escapeHtml(optionsText)}</div>
+          <div class="answer-box">
+            <div class="answer-line">你的答案：${escapeHtml(getUserAnswerText(q, item.userAnswer))}</div>
+            <div class="answer-line correct-answer">正確答案：${escapeHtml(getAnswerText(q))}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  html += `<button class="btn secondary" onclick="startQuiz()">重新測驗</button>`;
+  document.getElementById("result").innerHTML = html;
+  show("result");
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+</script>
+</body>
+</html>

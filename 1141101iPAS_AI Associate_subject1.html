@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>114 年第四次 AI 應用規劃師-初級｜人工智慧基礎概論</title>
+<style>
+:root {
+  --bg:#f5f7fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+  --primary:#2563eb; --primary-dark:#1d4ed8;
+  --success-bg:#dcfce7; --success:#166534;
+  --danger-bg:#fee2e2; --danger:#991b1b;
+  --border:#e5e7eb; --wrong-title:#be123c;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.7;
+}
+.container { width:100%; max-width:760px; margin:0 auto; padding:18px; }
+.card { background:var(--card); border-radius:20px; padding:22px; box-shadow:0 8px 24px rgba(15,23,42,.08); }
+.home-title { font-size:24px; line-height:1.35; margin:8px 0 12px; font-weight:800; }
+.home-subtitle { font-size:20px; font-weight:700; margin-bottom:6px; }
+.meta { color:var(--muted); font-size:15px; }
+.btn {
+  display:inline-flex; justify-content:center; align-items:center; width:100%; margin-top:16px; border:0; border-radius:14px;
+  padding:14px 18px; background:var(--primary); color:white; font-size:17px; font-weight:700; cursor:pointer;
+}
+.btn:hover { background:var(--primary-dark); }
+.btn.secondary { background:#eef2ff; color:#1e40af; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; color:var(--muted); font-size:15px; }
+.progress { height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:8px 0 18px; }
+.progress-inner { height:100%; background:var(--primary); width:0%; transition:width .25s ease; }
+.question-number { font-weight:800; color:#111827; }
+.question-stem { font-size:18px; font-weight:650; margin:14px 0 16px; white-space:pre-wrap; }
+.option {
+  width:100%; text-align:left; padding:14px 14px; margin:10px 0; border:1px solid var(--border); border-radius:14px;
+  background:#fff; color:var(--text); font-size:16px; line-height:1.65; white-space:pre-wrap; cursor:pointer;
+}
+.option:hover { border-color:#bfdbfe; background:#eff6ff; }
+.option.disabled { cursor:not-allowed; }
+.option.correct { border-color:#86efac; background:var(--success-bg); }
+.option.wrong { border-color:#fecaca; background:var(--danger-bg); }
+.feedback { display:none; margin-top:14px; padding:14px; border-radius:14px; font-weight:700; }
+.feedback.correct { display:block; background:var(--success-bg); color:var(--success); }
+.feedback.wrong { display:block; background:var(--danger-bg); color:var(--danger); }
+.result-title { font-size:26px; font-weight:900; margin:0 0 12px; }
+.result-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:14px 0 18px; }
+.stat { background:#f8fafc; border:1px solid var(--border); border-radius:14px; padding:12px; text-align:center; }
+.stat .num { font-size:24px; font-weight:900; }
+.stat .label { color:var(--muted); font-size:14px; }
+.wrong-card { border:1px solid var(--border); border-radius:16px; padding:15px; margin:12px 0; background:#fff; }
+.wrong-title { font-weight:900; margin-bottom:8px; color:var(--wrong-title); font-size:18px; }
+.wrong-stem { white-space:pre-wrap; font-weight:700; margin-bottom:12px; }
+.wrong-options { white-space:pre-wrap; }
+.answer-box { margin-top:14px; padding-top:12px; border-top:3px solid #ef4444; }
+.answer-line { margin-top:8px; font-weight:900; }
+.answer-line.correct-answer { color:#111827; }
+.hidden { display:none; }
+.footer-note { margin-top:14px; font-size:13px; color:var(--muted); text-align:center; }
+@media (max-width:480px) {
+  .container { padding:12px; }
+  .card { padding:18px; border-radius:18px; }
+  .home-title { font-size:21px; }
+  .home-subtitle { font-size:18px; }
+  .question-stem { font-size:17px; }
+  .option { font-size:15.5px; padding:13px; }
+  .result-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <section id="home" class="card">
+    <div class="home-title">114 年第四次 AI 應用規劃師-初級【公告試題】</div>
+    <div class="home-subtitle">人工智慧基礎概論(114.11.01)</div>
+    <div class="meta">共 50 題｜單選題｜每題 2 分｜滿分 100 分</div>
+    <button class="btn" onclick="startQuiz()">開始測驗</button>
+    <div class="footer-note">答題後會立即顯示正確答案，最後統計分數與錯題。</div>
+  </section>
+
+  <section id="quiz" class="card hidden">
+    <div class="topbar">
+      <div><span class="question-number">第 <span id="currentNo">1</span> / 50 題</span></div>
+      <div>目前作答：<span id="answeredCount">0</span> 題</div>
+    </div>
+    <div class="progress"><div id="progressInner" class="progress-inner"></div></div>
+    <div id="questionStem" class="question-stem"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="nextBtn" class="btn hidden" onclick="nextQuestion()">下一題</button>
+  </section>
+
+  <section id="result" class="card hidden"></section>
+</div>
+
+<script>
+const questions = [{"number": 1, "answer": "B", "stem": "在人工智慧系統的決策流程中，下列哪一種情境最符合「人在迴圈上\n（Human-over-the-loop）」所強調的監督機制？", "options": [{"label": "A", "text": "(A)AI 系統只能提供建議，人類需主動下達命令才能進行決策；"}, {"label": "B", "text": "(B)人類對AI 的運行進行日常監督，必要時可立即介入修正或干預；"}, {"label": "C", "text": "(C)人類平時不參與AI 的運作，僅在發生異常或重大錯誤時才接手控\n制；"}, {"label": "D", "text": "(D)AI 的所有判斷與行動在執行前，皆須經過人類逐一審核與批准"}]}, {"number": 2, "answer": "C", "stem": "下列哪一種特徵工程技巧，最適合將「星期幾」和「24 小時制時間」\n這兩個欄位結合，以預測通勤時間？", "options": [{"label": "A", "text": "(A)One-hot 編碼（One-hot encoding）；"}, {"label": "B", "text": "(B)正規化（Normalization）；"}, {"label": "C", "text": "(C)特徵交叉（Feature Cross）；"}, {"label": "D", "text": "(D)寬深模型（Wide and Deep）"}]}, {"number": 3, "answer": "D", "stem": "關於ETL（Extract-Transform-Load），下列敘述何者為正確？", "options": [{"label": "A", "text": "(A)E 表示將資料直接儲存至目標儲存庫；"}, {"label": "B", "text": "(B)ETL 的處理順序可以自由調整為TEL；"}, {"label": "C", "text": "(C)L 表示將目標儲存庫經過反加密處理載入資料；"}, {"label": "D", "text": "(D)T 包括資料的清理與排序"}]}, {"number": 4, "answer": "C", "stem": "關於資料正則化（Regularization）L1、L2 方法，下列敘述何者正確？", "options": [{"label": "A", "text": "(A)L1 權重個數愈多，愈可以提升模型的正確率；"}, {"label": "B", "text": "(B)L2 稱為Lasso 正則化；"}, {"label": "C", "text": "(C)L1 運用減少權重的絕對值來控制模型的複雜度；"}, {"label": "D", "text": "(D)L2 較L1 正則化方法會將特徵權重趨近於零"}]}, {"number": 5, "answer": "D", "stem": "在機器學習中，「偏差與變異權衡（Bias-Variance Tradeoff）」主要用\n來解決下列哪一類型的問題？", "options": [{"label": "A", "text": "(A)因資料來源或收集方式限制，導致模型學習到的資訊不足；"}, {"label": "B", "text": "(B)測試資料樣本與訓練資料高度重複，造成模型泛化能力評估失準；"}, {"label": "C", "text": "(C)訓練資料中類別分布不均，使模型在少數類別上表現不佳；"}, {"label": "D", "text": "(D)如何在模型偏差與變異之間取得平衡，以避免過度擬合或欠擬合"}]}, {"number": 6, "answer": "C", "stem": "在Lasso 模型中，L1 正則化（Regularization）導致參數收斂為零的\n原因為何？", "options": [{"label": "A", "text": "(A)L1 正則化忽略目標變數；"}, {"label": "B", "text": "(B)L1 對梯度有平滑作用；"}, {"label": "C", "text": "(C)L1 對大係數懲罰較強，促使稀疏解；\n題    目"}, {"label": "D", "text": "(D)L1 會轉換損失函數為非凸形"}]}, {"number": 7, "answer": "B", "stem": "貝氏分類器（Naive Bayes Classifier）常被應用於文字分類、垃圾郵\n件過濾等場景。依據模型特性，它最適合歸類於下列哪一類？", "options": [{"label": "A", "text": "(A)透過直接學習輸入特徵與目標標籤之間的邊界或關係來進行分類\n的模型；"}, {"label": "B", "text": "(B)透過建構資料的整體分布，並利用條件關係進行推斷和分類的模\n型；"}, {"label": "C", "text": "(C)側重探索資料中樣本間的相似性，將資料自動分成不同群組的模\n型；"}, {"label": "D", "text": "(D)透過試錯學習，根據行動結果的獎勵或懲罰來優化決策策略的模型"}]}, {"number": 8, "answer": "B", "stem": "為提升生成式AI 系統回應的語境一致性，常會結合哪類模型技術？", "options": [{"label": "A", "text": "(A)決策樹分類器（Decision Tree Classifier）；"}, {"label": "B", "text": "(B)條件語言模型（Conditional Language Model）；"}, {"label": "C", "text": "(C)強化學習Q-learning 函數模型；"}, {"label": "D", "text": "(D)基因演算法（Genetic Algorithm）"}]}, {"number": 9, "answer": "B", "stem": "根據2025 年9 月行政院通過之《人工智慧基本法》草案，政府推動人\n工智慧之「創新實驗環境」制度，主要參考歐盟的何種制度？", "options": [{"label": "A", "text": "(A)Data Protection Impact Assessment；"}, {"label": "B", "text": "(B)Regulatory Sandbox；"}, {"label": "C", "text": "(C)AI Trust Label；"}, {"label": "D", "text": "(D)AI Ethics Review Board"}]}, {"number": 10, "answer": "C", "stem": "根據《金融機構運用人工智慧技術作業規範》，金融機構須建立內部治\n理架構，並指定專責單位或人員負責推動及管理人工智慧事務，下列何\n者並非規範所明訂須落實的治理措施？", "options": [{"label": "A", "text": "(A)辦理人工智慧人才培育；"}, {"label": "B", "text": "(B)清楚了解生成式 AI 技術之運作模式；"}, {"label": "C", "text": "(C)每日公布人工智慧系統運作狀況；"}, {"label": "D", "text": "(D)指派高階主管或委員會進行監督管理"}]}, {"number": 11, "answer": "B", "stem": "下列哪一類問題最適合使用非監督式學習（Unsupervised Learning）\n來處理？", "options": [{"label": "A", "text": "(A)根據已標記的醫療影像訓練模型診斷疾病；"}, {"label": "B", "text": "(B)根據使用者行為將用戶分群，以優化行銷策略；"}, {"label": "C", "text": "(C)透過已知交通事故記錄預測未來事故發生機率；"}, {"label": "D", "text": "(D)根據歷史股價預測未來股市的走勢\n題    目"}]}, {"number": 12, "answer": "A", "stem": "下列哪一種圖表最適合用來呈現並分析「兩個數值型變數」之間的關\n係，例如觀察身高與體重的相關性？", "options": [{"label": "A", "text": "(A)散佈圖（Scatter Plot）；"}, {"label": "B", "text": "(B)折線圖（Line Chart）；"}, {"label": "C", "text": "(C)直方圖（Histogram）；"}, {"label": "D", "text": "(D)長條圖（Bar Chart）"}]}, {"number": 13, "answer": "D", "stem": "下列哪一項應用情境與機器學習類型搭配正確？", "options": [{"label": "A", "text": "(A)在醫療影像資料中，僅有少部分影像有專家標註診斷，其餘大多數\n影像未標註，研究者結合已標註與未標註資料來建立模型 — 監督式\n學習（Supervised Learning）；"}, {"label": "B", "text": "(B)在自駕車模擬環境中，模型透過試駕獲得「是否安全通過路口」的\n獎勵或懲罰訊號，逐步調整決策策略 — 非監督式學習（Unsupervised\nLearning）；"}, {"label": "C", "text": "(C)在顧客購買紀錄中，利用已知的「顧客是否流失」標籤，訓練模型\n以預測新顧客未來是否會流失 — 強化式學習（Reinforcement\nLearning）；"}, {"label": "D", "text": "(D)在股票市場資料中，輸入歷史股價序列，嘗試將未來可能走勢劃分\n成若干「上升型、盤整型、下降型」群組，無需使用任何標籤 — 非監\n督式學習（Unsupervised Learning）"}]}, {"number": 14, "answer": "C", "stem": "某企業分析團隊正在處理一組近兩年的營運與銷售數據，共有四個部\n門提出了各自的分析需求，請判斷哪一個最接近「預測性分析\n（Predictive Analysis）」的特性？", "options": [{"label": "A", "text": "(A)視覺化所有產品線過去月銷售走勢與標準差，觀察其分佈情況與波\n動程度；"}, {"label": "B", "text": "(B)藉由資料比對分析，找出去年母親節促銷失效的地區與品類組合；"}, {"label": "C", "text": "(C)建構模型推算下一季的主力商品銷量，以規劃備貨與倉儲資源配\n置；"}, {"label": "D", "text": "(D)透過熱圖分析廣告投放成本與訂單轉換率之間的潛在關聯性"}]}, {"number": 15, "answer": "A", "stem": "某模型使用 K-近鄰演算法（KNN）進行分類，K 設為 3。 一筆新的測\n試資料輸入後，與其最接近的3 筆資料的類別如下：鄰近樣本1：類別\nA；鄰近樣本2：類別B；鄰近樣本3：類別A。請問模型會將這筆資料\n預測為哪一類別？", "options": [{"label": "A", "text": "(A)類別A；"}, {"label": "B", "text": "(B)類別B；\n題    目"}, {"label": "C", "text": "(C)類別A 與B 各一半，無法分類；"}, {"label": "D", "text": "(D)類別A 或B，視距離遠近加權而定"}]}, {"number": 16, "answer": "B", "stem": "某團隊想採用循環神經網路（Recurrent Neural Network, RNN）建構\n長期氣候數據的預測模型，以下哪一項敘述最符合使用RNN 可能會遇\n到的挑戰？", "options": [{"label": "A", "text": "(A)RNN 無法處理可變長度的序列輸入，因此在實務上限制極大；"}, {"label": "B", "text": "(B)RNN 在長序列訓練中可能出現梯度消失，影響模型效果；"}, {"label": "C", "text": "(C)RNN 無法捕捉時間上的依賴關係，因此預測準確度低；"}, {"label": "D", "text": "(D)RNN 只能用於分類任務，不能應用於時間序列預測"}]}, {"number": 17, "answer": "A", "stem": "一間金融科技公司設計一款智慧投資系統，該系統會根據市場變化自\n動決定「買進」、「持有」或「賣出」的行動，並根據每次交易後的盈虧\n結果，逐步優化下一次的投資策略。整個過程中，系統不依賴事先標記\n的資料，而是根據歷次行動獲得的獎勵進行調整。請問此系統最可能採\n用哪一種學習方法？", "options": [{"label": "A", "text": "(A)強化式學習（Reinforcement Learning）；"}, {"label": "B", "text": "(B)監督式學習（Supervised Learning）；"}, {"label": "C", "text": "(C)非監督式學習（Unsupervised Learning）；"}, {"label": "D", "text": "(D)遷移學習（Transfer Learning）"}]}, {"number": 18, "answer": "C", "stem": "關於 Q-Learning 與Deep Q-Learning，下列敘述何者最正確？", "options": [{"label": "A", "text": "(A)Q-Learning 與Deep Q-Learning 的差異在於是否使用標記資料作\n為學習基礎；"}, {"label": "B", "text": "(B)Q-Learning 可處理任意維度的狀態空間，因此比Deep Q-Learning\n更靈活；"}, {"label": "C", "text": "(C)Deep Q-Learning 透過深度神經網路近似Q 值，避免了Q 表在高維\n空間中難以擴展的問題；"}, {"label": "D", "text": "(D)Deep Q-Learning 無法搭配經驗回放（Experience Replay），因為\n會導致樣本順序被打亂"}]}, {"number": 19, "answer": "A", "stem": "在訓練機器學習模型時，若任務為預測房價，應選用下列哪一種損失函\n數（Loss Function）來衡量預測誤差？", "options": [{"label": "A", "text": "(A)均方誤差（MSE）；"}, {"label": "B", "text": "(B)交叉熵損失（Cross-Entropy Loss）；"}, {"label": "C", "text": "(C)Hinge 損失（Hinge Loss）；"}, {"label": "D", "text": "(D)KL 散度（Kullback-Leibler Divergence）"}]}, {"number": 20, "answer": "A", "stem": "某醫院希望開發一個系統，根據患者的年齡、血壓與BMI 等資訊，預測\n題    目\n其罹患糖尿病的機率（0~1），並依據預測值是否超過0.5 做出風險警\n示。下列哪一種模型最適合用於此分類任務？", "options": [{"label": "A", "text": "(A)邏輯迴歸（Logistic Regression）；"}, {"label": "B", "text": "(B)支援向量機（Support Vector Machine）；"}, {"label": "C", "text": "(C)決策樹（Decision Tree）；"}, {"label": "D", "text": "(D)K 平均演算法（K-means）"}]}, {"number": 21, "answer": "D", "stem": "某金融科技公司正開發一套違約風險預測系統，需大量處理不同客戶\n的財務特徵資料。考量到資料特徵數量眾多，且希望提升預測的穩定性\n與泛化能力，下列哪一種鑑別式AI 模型最適合？", "options": [{"label": "A", "text": "(A)邏輯迴歸（Logistic Regression）；"}, {"label": "B", "text": "(B)支援向量機（Support Vector Machine）；"}, {"label": "C", "text": "(C)決策樹（Decision Tree）；"}, {"label": "D", "text": "(D)隨機森林（Random Forest）"}]}, {"number": 22, "answer": "C", "stem": "關於變分自編碼器（Variational Autoencoder, VAE）的運作流程，下\n列何者敘述最為正確？", "options": [{"label": "A", "text": "(A)解碼器的任務是將低維壓縮向量分類為不同類別；"}, {"label": "B", "text": "(B)編碼器將輸入資料轉換為可視化圖像以利模型學習；"}, {"label": "C", "text": "(C)編碼器將資料轉換為潛在空間表示，解碼器再重建資料；"}, {"label": "D", "text": "(D)編碼器利用最大邊際機率對資料進行異常點偵測"}]}, {"number": 23, "answer": "D", "stem": "下列何者不是我國數位發展部AI 產品與系統評測中心對生成式AI 的\n評測項目?", "options": [{"label": "A", "text": "(A)當責性；"}, {"label": "B", "text": "(B)可靠性；"}, {"label": "C", "text": "(C)隱私及資安；"}, {"label": "D", "text": "(D)互動性"}]}, {"number": 24, "answer": "C", "stem": "在保持GPT-OSS 模型架構不變的前提下，如果將模型參數量從20 億提\n升至120 億，並假設有足夠的訓練資料支撐，下列敘述何者最正確？", "options": [{"label": "A", "text": "(A)模型參數增加會線性提升效能，且即使訓練資料不變也不會遇到瓶\n頸；"}, {"label": "B", "text": "(B)參數越多模型推理越快，因為每層可以並行計算更多參數；"}, {"label": "C", "text": "(C)較大的參數量能提升模型的表達能力與預測效能，但需足夠訓練資\n料支持；"}, {"label": "D", "text": "(D)增加參數量不影響記憶體使用，只會影響計算速度"}]}, {"number": 25, "answer": "C", "stem": "在自然語言處理任務中，為了減少訓練語料中偏見對模型的影響，下列\n題    目\n哪種資料處理策略屬於常見的「資料去偏（Data Debiasing）」做法？", "options": [{"label": "A", "text": "(A)讓模型在訓練時隨機替換輸出，以抵消資料中存在的系統性偏差；"}, {"label": "B", "text": "(B)增加模型的參數量，依賴更大的模型自動消除原始資料中的偏見；"}, {"label": "C", "text": "(C)調整或擴充訓練語料，使不同群體或類型資料的比例更加平衡，避\n免模型過度偏向出現頻率高的類別；"}, {"label": "D", "text": "(D)對訓練資料施加額外正則化或噪音，使模型在學習過程中對偏見敏\n感度降低"}]}, {"number": 26, "answer": "D", "stem": "在深度學習模型的微調（Fine-tuning）過程中，可能出現所謂的「災\n難性遺忘（Catastrophic Forgetting）」。此現象最可能造成哪種情況？", "options": [{"label": "A", "text": "(A)由於計算資源或訓練步驟不足，模型在微調過程中無法完整收斂，\n導致學習效果受限；"}, {"label": "B", "text": "(B)微調後模型的表現變得隨機，無法有效記憶新學到的模式與知識；"}, {"label": "C", "text": "(C)微調後模型的部分權重產生偏移，導致模型無法針對較長的文字進\n行回應；"}, {"label": "D", "text": "(D)模型過度適應微調的資料分佈，逐漸遺忘先前預訓練所獲得的廣泛\n知識，在原有任務或廣泛領域上表現變差"}]}, {"number": 27, "answer": "B", "stem": "在大型Transformer 模型的效能優化過程中，常見的方法之一是「剪\n枝（Pruning）」。下列哪一項最符合該方法的核心概念？", "options": [{"label": "A", "text": "(A)將模型中所有權重按比例縮小，使其值更接近零，以降低計算量；"}, {"label": "B", "text": "(B)移除模型中影響較小或冗餘的部分權重參數，以減少模型大小並提\n升推理效率；"}, {"label": "C", "text": "(C)在訓練時僅更新部分權重而將其他權重凍結，從而減少需要調整的\n參數數量；"}, {"label": "D", "text": "(D)根據注意力分數動態跳過處理部分輸入Token，以減少每次前向傳\n播的計算"}]}, {"number": 28, "answer": "D", "stem": "對非常長的輸入序列進行推理（Inference），Transformer 模型推理的\n主要計算瓶頸通常是什麼？", "options": [{"label": "A", "text": "(A)模型輸出層產生文本的過程，因為每生成一個詞都必須重新訓練整\n個模型一次；"}, {"label": "B", "text": "(B)詞嵌入 (Embedding) 查找操作，因為其時間複雜度隨詞彙表大小\n指數級增長；"}, {"label": "C", "text": "(C)Softmax 函數的計算，因為對每個Token 都需要執行繁重的運算；"}, {"label": "D", "text": "(D)自注意力層的計算和其記憶體使用，因為注意力矩陣的大小隨序列\n長度呈平方級增長\n題    目"}]}, {"number": 29, "answer": "A", "stem": "在「可解釋人工智慧（Explainable AI, XAI）」領域中，LIME（Local\nInterpretable Model-agnostic Explanations）方法最核心的應用目\n的是什麼？", "options": [{"label": "A", "text": "(A)解釋單一樣本（局部預測）的黑箱模型決策過程；"}, {"label": "B", "text": "(B)全面提升黑箱模型整體的預測準確度；"}, {"label": "C", "text": "(C)將黑箱模型轉換成完全可解釋的模型作為替代；"}, {"label": "D", "text": "(D)用於生成大量擬真數據來替代訓練集"}]}, {"number": 30, "answer": "A", "stem": "在醫療診斷決策支援系統等高風險領域中，「可解釋人工智慧\n（Explainable AI, XAI）」的核心價值最主要呈現在哪個面向？", "options": [{"label": "A", "text": "(A)透過提供可理解的決策依據，促進患者與醫療專業人員對系統診斷\n結果的信任與接受度；"}, {"label": "B", "text": "(B)以可解釋性方法優化臨床資料蒐集與管理流程，從而降低整體醫療\n作業成本；"}, {"label": "C", "text": "(C)利用解釋機制增強模型預測的統計顯著性與準確度，使其在研究及\n實務應用中更具科學性；"}, {"label": "D", "text": "(D)透過提供透明化的運作過程，進而減輕臨床人員負擔，並提升醫療\n服務的整體效率"}]}, {"number": 31, "answer": "D", "stem": "在金融科技公司的信貸決策系統中，導入反事實解釋（Counterfactual\nExplanation）時，實際部署往往伴隨技術與監管挑戰。下列哪一項最\n符合該情境下的核心挑戰？", "options": [{"label": "A", "text": "(A)需要建立完整的客戶行為預測模型來估算建議改變的實施成本，並\n整合到現有的風險管理系統架構中；"}, {"label": "B", "text": "(B)必須使用聯邦學習技術保護客戶隱私，同時在分散式環境中計算跨\n機構的反事實解釋結果；"}, {"label": "C", "text": "(C)需要建構時間序列因果圖來處理客戶信用狀況的動態變化，並預測\n未來可能的信用評分軌跡；"}, {"label": "D", "text": "(D)生成的反事實樣本必須滿足特徵間的因果約束和業務邏輯約束，同\n時確保建議的改變在現實中具有可操作性且符合公平放貸法規"}]}, {"number": 32, "answer": "B", "stem": "在統計推論中，若樣本來自母體但呈現明顯偏態分布，且樣本數有限，\n下列哪一項策略最能減少推估母體參數的偏誤？", "options": [{"label": "A", "text": "(A)直接使用樣本平均數與變異數估計母體參數，不做任何調整；"}, {"label": "B", "text": "(B)增加樣本數並考慮使用分位數或中位數作為中心趨勢估計；"}, {"label": "C", "text": "(C)將樣本隨機重新排列後，多次計算平均值以消除偏態影響；"}, {"label": "D", "text": "(D)完全依賴樣本標準差來估計母體參數，忽略分布形態\n題    目"}]}, {"number": 33, "answer": "D", "stem": "在工業物聯網架構中，進行設備預測性維護（Predictive Maintenance）\n時，若面對異常事件發生頻率極低、樣本高度不平衡的時間序列資料，\n下列哪一種方法最能兼顧模型穩定性與異常偵測效能？", "options": [{"label": "A", "text": "(A)將每筆異常事件資料複製多次以提升模型對異常的辨識敏感度，搭\n配全序列訓練模型（如LSTM）；"}, {"label": "B", "text": "(B)對時間序列進行差分與標準化後，使用傳統監督式學習模型（如\nSVM）進行分類訓練；"}, {"label": "C", "text": "(C)使用經過時間序列特化的SMOTE 技術生成異常樣本，以平衡異常與\n正常資料比例；"}, {"label": "D", "text": "(D) 採用基於重建誤差的自編碼器模型（Sequence-to-Sequence\nAutoencoder）進行異常偵測，並僅使用正常資料進行訓練"}]}, {"number": 34, "answer": "C", "stem": "在零售業進行客戶行為分析時，資料倉儲中發現多個欄位儲存相同的\n購買金額資訊（例如：amount_usd、total_price、transaction_value），\n但其單位、命名慣例及格式不一致，進而導致特徵工程階段混淆模型輸\n入。針對此種跨欄位語義重疊與結構冗餘問題，下列哪一種資料處理策\n略最合適且具實務可行性？", "options": [{"label": "A", "text": "(A)利用資料探勘技術自動選擇資料集中對目標變數最敏感的欄位，其\n他欄位捨棄即可，避免過度清理干擾原始結構；"}, {"label": "B", "text": "(B)保留所有相似欄位，交由高階模型（如Gradient Boosting 或 Deep\nLearning）自動學習特徵關聯，無需手動處理；"}, {"label": "C", "text": "(C)建立欄位命名標準，統一金額單位與格式，進行欄位正規化與語義\n合併，減少重複資訊影響特徵重要性估計；"}, {"label": "D", "text": "(D)將重複欄位視為類別欄位，進行One-hot 編碼（One-hot encoding）\n後輸入模型，以避免數值誤導模型學習過程"}]}, {"number": 35, "answer": "D", "stem": "某大型零售企業準備將商品推薦模型上線，專案團隊在檢視訓練資料\n時，發現部分商品類別（例如高價商品）樣本數量極少，而多數樣本集\n中於低價商品。若此不平衡問題未妥善處理，下列何種狀況最可能在實\n際推薦結果中發生？", "options": [{"label": "A", "text": "(A)模型在預測時傾向輸出稀有類別，導致雖能捕捉到少數樣本，但精\n確率（Precision）顯著下降；"}, {"label": "B", "text": "(B)模型由於類別分布不均，難以建立有效的線性分離邊界，進而無法\n收斂；"}, {"label": "C", "text": "(C)模型過度聚焦於稀有類別樣本，導致對多數類別的預測能力下降，\n整體效能受損；\n題    目"}, {"label": "D", "text": "(D)模型學到的決策邊界主要由多數類別主導，忽視了稀有類別，造成\n該類別的召回率（Recall）大幅降低"}]}, {"number": 36, "answer": "C", "stem": "某電商資料團隊要協助行銷部門規劃再行銷策略。目前取得資料包含\n使用者點擊、購買紀錄、流量來源與轉換率。若資料團隊希望先進行探\n索性資料分析（EDA），下列哪一項最符合EDA 的做法？", "options": [{"label": "A", "text": "(A)建立隨機森林模型，預測使用者是否會完成購買；"}, {"label": "B", "text": "(B)使用K-means 對使用者群進行分群並立即制定對應促銷策略；"}, {"label": "C", "text": "(C)繪製各類流量來源對轉換率的關聯圖，尋找潛在關係；"}, {"label": "D", "text": "(D)對不同購物路徑設定統計假設並進行雙樣本t 檢定"}]}, {"number": 37, "answer": "B", "stem": "某金融科技公司在利用歷史交易資料建立風險控管模型時，嘗試推估\n整體詐騙交易比例。近期發現，樣本間存在明顯的時間序列相關性，導\n致模型在實際偵測新交易時誤判率升高。若希望同時改善詐騙比例推\n估的準確性並提升模型的穩健性，下列哪一種做法最為合適？", "options": [{"label": "A", "text": "(A)擴充樣本數量，以涵蓋更多潛在的詐騙型態，但維持既有的隨機抽\n樣方式不變；"}, {"label": "B", "text": "(B)採取時間序列敏感的抽樣策略，例如依據交易時間區間進行分層，\n以保存原始的時間結構特性；"}, {"label": "C", "text": "(C)將資料完全隨機打散，以降低序列相關性對模型訓練造成的影響；"}, {"label": "D", "text": "(D)在模型評估時，針對相鄰時間區段進行誤差合併，以便用整體估計\n方式修正詐騙比例"}]}, {"number": 38, "answer": "C", "stem": "某公司建置基於檢索增強生成（RAG）的知識查詢系統，需同時兼顧查\n詢效能與資料的即時更新。近期發現回應內容偶爾過時，且每次更新文\n件都需完整重建索引，導致系統在更新期間無法服務。若要解決此問題\n並提升整體穩健性，下列哪項做法最適合？", "options": [{"label": "A", "text": "(A)調整生成模型的回應隨機性參數，以降低答案偏差並提升一致性；"}, {"label": "B", "text": "(B)提升檢索與索引的運算效能，以縮短查詢與更新所需時間；"}, {"label": "C", "text": "(C)採用索引的增量或分段更新方式，使新資料能即時納入而不需全部\n重建；"}, {"label": "D", "text": "(D)建立常見問題的標準答案集，透過快速檢索回應以降低模型負擔"}]}, {"number": 39, "answer": "A", "stem": "某醫院計畫開發住院日數預測模型，以協助病房調度。多數病人的住院\n日數集中在3–7 天，但仍有少數重症患者因治療需求而住院日數明顯\n偏長。醫院希望採用一種合適的評估方式，既能兼顧大部分病人的預測\n準確度，也能確保對重症個案的預測維持穩健。下列哪一種方法最符合\n此需求？\n題    目", "options": [{"label": "A", "text": "(A)在模型檢核時，同時呈現平均絕對誤差（MAE）與重症子群的誤差指\n標；"}, {"label": "B", "text": "(B)僅針對一般病人樣本進行交叉驗證，以避免重症個案拉高誤差；"}, {"label": "C", "text": "(C)將所有病人的住院日數進行標準化處理，以減少數值範圍差異的影\n響；"}, {"label": "D", "text": "(D)只採用單一的整體決定係數 (R²) 作為模型優劣的判斷依據"}]}, {"number": 40, "answer": "D", "stem": "關於監督式學習（Supervised Learning ）與非監督式學習\n（Unsupervised Learning）的目標，下列敘述何者錯誤？\n1.非監督式學習的核心在於發掘資料內在結構，例如分群、關聯規則與\n降維，而不依賴外部標籤。\n2.監督式學習的典型應用為分類與迴歸，通常不適合應用於異常偵測\n任務。\n3.非監督式學習若搭配少量標註資料，即會完全轉化為監督式學習。\n4.監督式學習仰賴已標註的資料集，透過最小化輸出與真實標籤之間\n的差距，學習輸入與目標之間的對應函數。\n5.所有監督式學習任務都必須要有大量完整標註資料，否則無法進行\n任何有效的模型訓練。\n6.非監督式學習不需要目標變數，僅透過輸入資料本身的特徵分布進\n行模式學習。", "options": [{"label": "A", "text": "(A)3、5、6；"}, {"label": "B", "text": "(B)1、4、6；"}, {"label": "C", "text": "(C)2、4、6；"}, {"label": "D", "text": "(D)2、3、5"}]}, {"number": 41, "answer": "D", "stem": "一家旅遊平台希望建立模型，預測顧客下次是否會再次透過該平台訂\n房。資料包含：顧客ID、年齡、旅遊次數、平均花費金額、主要交通\n方式（火車/飛機/自駕/公車）、會員等級（普通/進階/白金）、是否為\n海外旅遊等。下列哪一種特徵工程方法最適合處理「主要交通方式」欄\n位？", "options": [{"label": "A", "text": "(A)布林轉換（Boolean Conversion）；"}, {"label": "B", "text": "(B)序數編碼（Ordinal Encoding）；"}, {"label": "C", "text": "(C)數值標準化（Numerical Standardization）；"}, {"label": "D", "text": "(D)One-hot 編碼（One-hot Encoding）"}]}, {"number": 42, "answer": "C", "stem": "一家跨國醫療研究機構希望利用各地醫院的病患資料，建立一個能夠\n預測疾病早期風險的機器學習模型。由於各國法規限制，病患的原始資\n題    目\n料無法集中到單一伺服器。在此情境下，下列哪一種方法最能同時滿足\n「各醫院保留資料不外流」與「模型仍能跨院學習」的需求？", "options": [{"label": "A", "text": "(A)資料匿名化（Data Anonymization）；"}, {"label": "B", "text": "(B)差分隱私（Differential Privacy）；"}, {"label": "C", "text": "(C)聯邦學習（Federated Learning）；"}, {"label": "D", "text": "(D)交叉驗證（Cross-validation）"}]}, {"number": 43, "answer": "D", "stem": "某公司欲建立員工離職風險預測模型，資料集中包含「年度績效分數」、\n「平均每月加班時數」、「年齡」等數值型特徵。由於各特徵的數值範圍\n差異極大（例如績效分數1–5、加班時數0–80、年齡20–65），若直\n接輸入至使用梯度下降的邏輯迴歸(Logistic Regression)模型，可能\n導致模型收斂緩慢或權重偏斜。為提升模型訓練效率與準確度，下列哪\n一種特徵工程方法最適合應用於這些數值特徵？", "options": [{"label": "A", "text": "(A)布林轉換（Boolean Conversion）；"}, {"label": "B", "text": "(B)時間序列分解（Time Series Decomposition）；"}, {"label": "C", "text": "(C)One-hot 編碼（One-hot Encoding）；"}, {"label": "D", "text": "(D)數值標準化（Numerical Standardization）"}]}, {"number": 44, "answer": "C", "stem": "在機器學習中，「叢集（Clustering）」方法最典型的應用情境是下列何\n者？", "options": [{"label": "A", "text": "(A)根據歷史交易紀錄與已標註的詐欺案例，訓練模型來偵測未來的詐\n欺交易；"}, {"label": "B", "text": "(B)使用醫療數據與病患的診斷標籤，建立模型以預測病人是否罹患特\n定疾病；"}, {"label": "C", "text": "(C)根據顧客的消費行為與特徵，將顧客自動劃分為數個群組，以便進\n行差異化行銷；"}, {"label": "D", "text": "(D)透過大量已標註影像，訓練深度學習模型來辨識照片中的物件種類"}]}, {"number": 45, "answer": "C", "stem": "某醫院研究團隊蒐集了大量病患的「收縮壓」數據，經檢驗後顯示此數\n值大致呈現常態分布。在進行後續模型分析前，研究人員希望妥善處理\n可能存在的極端血壓數值。下列哪一種做法最為合適？", "options": [{"label": "A", "text": "(A)將所有極端偏高或偏低的血壓數據直接刪除，以保留最具代表性的\n病患樣本；"}, {"label": "B", "text": "(B)使用對數轉換（Log Transformation），將數據壓縮至更接近常態，\n以降低極端值的影響；"}, {"label": "C", "text": "(C)透過Z 分數（Z-score）或標準差範圍檢測異常值，並依研究需求決\n定是否調整或移除；\n題    目"}, {"label": "D", "text": "(D)將檢測到的離群值以Label Encoding 編碼，轉換為序號標籤以避\n免影響原始分布"}]}, {"number": 46, "answer": "B", "stem": "某電商公司想預測用戶是否會購買特定商品，資料中包含多種用戶屬\n性與行為特徵。分析師希望選出對購買結果最有預測價值的特徵，以提\n升模型效能。下列哪一種描述最符合監督式特徵選擇（Supervised\nFeature Selection）的概念？", "options": [{"label": "A", "text": "(A)根據特徵的整體分布、變異度或資訊量進行篩選，而不直接參考目\n標變數；"}, {"label": "B", "text": "(B)評估每個特徵與目標變數之間的相關性，選擇對預測結果貢獻最大\n的特徵；"}, {"label": "C", "text": "(C)使用模型評估特徵對預測結果的重要性，並保留對目標變數影響較\n大的欄位；"}, {"label": "D", "text": "(D)將特徵透過降維方法（如PCA）轉換為新特徵，再用於模型訓練"}]}, {"number": 47, "answer": "B", "stem": "在訓練神經網路時，為了提升模型收斂速度與穩定性，避免梯度消失或\n梯度爆炸，下列哪一種做法最常被使用？", "options": [{"label": "A", "text": "(A)對輸入資料進行隨機旋轉或水平翻轉，以增加資料多樣性；"}, {"label": "B", "text": "(B)選用ReLU 或其變體作為隱藏層的啟動函數，以改善梯度傳播；"}, {"label": "C", "text": "(C)減少樣本量提升訓練速度；"}, {"label": "D", "text": "(D)對目標變數或特徵進行標準化"}]}, {"number": 48, "answer": "A", "stem": "若希望檢視某一連續型數據的分布情形（如集中程度、偏態或是否呈現\n多峰），下列哪一種應用情境最適合使用直方圖（Histogram） 來進行\n分析？", "options": [{"label": "A", "text": "(A)探討顧客年齡資料的整體分布特徵，並檢視是否存在異常集中或分\n散現象；"}, {"label": "B", "text": "(B)比較不同商品在各月份的銷售額變化趨勢，以觀察季節性波動；"}, {"label": "C", "text": "(C)追蹤公司近一年營收的時間序列變化，以了解整體成長趨勢；"}, {"label": "D", "text": "(D)檢視產品價格與月銷售量之間的關聯性，以評估是否具線性相關"}]}, {"number": 49, "answer": "A", "stem": "下列何者並非我國數位發展部 AI 產品與評測中心在評估大型語言模\n型安全性時，所指出的常見使用指標？", "options": [{"label": "A", "text": "(A)資料複雜性；"}, {"label": "B", "text": "(B)事實正確性；"}, {"label": "C", "text": "(C)偏見與歧視；"}, {"label": "D", "text": "(D)惡意與濫用可能性"}]}, {"number": 50, "answer": "A", "stem": "某雲端服務公司計畫將大型語言模型部署於線上系統，並以批次推論\n題    目\n（Batch Inference）方式處理每日上百萬筆用戶請求。專案團隊在評\n估可能遇到的挑戰時，下列哪一項通常不會被視為批次推論階段的主\n要難題？", "options": [{"label": "A", "text": "(A)如何確保訓練語料的涵蓋性與標註品質，以避免模型偏差影響輸\n出；"}, {"label": "B", "text": "(B)當批次規模增大時，如何降低推論延遲並保持即時回應能力；"}, {"label": "C", "text": "(C)在推論過程中，有效管理與分配龐大的輸入資料量以避免資源壅\n塞；"}, {"label": "D", "text": "(D)在叢集環境中精確安排推論任務，以提升GPU/TPU 等硬體資源的利\n用率\n《以下空白》"}]}];
+let currentIndex = 0;
+let userAnswers = Array(questions.length).fill(null);
+let locked = false;
+
+function show(id) {
+  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function startQuiz() {
+  currentIndex = 0;
+  userAnswers = Array(questions.length).fill(null);
+  locked = false;
+  show("quiz");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  locked = false;
+  const q = questions[currentIndex];
+  document.getElementById("currentNo").textContent = currentIndex + 1;
+  document.getElementById("answeredCount").textContent = userAnswers.filter(x => x !== null).length;
+  document.getElementById("progressInner").style.width = ((currentIndex + 1) / questions.length * 100) + "%";
+  document.getElementById("questionStem").textContent = q.stem;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt.text;
+    btn.onclick = () => chooseAnswer(opt.label);
+    optionsDiv.appendChild(btn);
+  });
+
+  const feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  document.getElementById("nextBtn").classList.add("hidden");
+}
+
+function chooseAnswer(label) {
+  if (locked) return;
+  locked = true;
+  const q = questions[currentIndex];
+  userAnswers[currentIndex] = label;
+
+  const buttons = document.querySelectorAll(".option");
+  buttons.forEach(btn => {
+    btn.classList.add("disabled");
+    const optionLabel = btn.textContent.trim().charAt(1);
+    if (optionLabel === q.answer) btn.classList.add("correct");
+    if (optionLabel === label && label !== q.answer) btn.classList.add("wrong");
+  });
+
+  const feedback = document.getElementById("feedback");
+  if (label === q.answer) {
+    feedback.className = "feedback correct";
+    feedback.textContent = "✅ 答對！正確答案：" + getAnswerText(q);
+  } else {
+    feedback.className = "feedback wrong";
+    feedback.textContent = "❌ 答錯！正確答案：" + getAnswerText(q);
+  }
+
+  const nextBtn = document.getElementById("nextBtn");
+  nextBtn.textContent = currentIndex === questions.length - 1 ? "查看成績" : "下一題";
+  nextBtn.classList.remove("hidden");
+}
+
+function nextQuestion() {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function getAnswerText(q) {
+  const found = q.options.find(o => o.label === q.answer);
+  return found ? found.text : q.answer;
+}
+
+function getUserAnswerText(q, label) {
+  if (!label) return "未作答";
+  const found = q.options.find(o => o.label === label);
+  return found ? found.text : label;
+}
+
+function showResult() {
+  let correct = 0;
+  const wrongs = [];
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.answer) correct++;
+    else wrongs.push({ q, userAnswer: userAnswers[i] });
+  });
+
+  const wrong = questions.length - correct;
+  const score = correct * 2;
+
+  let html = `
+    <div class="result-title">測驗完成</div>
+    <div class="result-grid">
+      <div class="stat"><div class="num">${score}</div><div class="label">分數</div></div>
+      <div class="stat"><div class="num">${correct}</div><div class="label">答對</div></div>
+      <div class="stat"><div class="num">${wrong}</div><div class="label">答錯</div></div>
+    </div>
+  `;
+
+  if (wrongs.length === 0) {
+    html += `<p>🎉 全部答對，太厲害了！</p>`;
+  } else {
+    html += `<h3>錯題回顧</h3>`;
+    wrongs.forEach(item => {
+      const q = item.q;
+      const optionsText = q.options.map(o => o.text).join("\n\n");
+      html += `
+        <div class="wrong-card">
+          <div class="wrong-title">第 ${q.number} 題</div>
+          <div class="wrong-stem">${escapeHtml(q.stem)}</div>
+          <div class="wrong-options">${escapeHtml(optionsText)}</div>
+          <div class="answer-box">
+            <div class="answer-line">你的答案：${escapeHtml(getUserAnswerText(q, item.userAnswer))}</div>
+            <div class="answer-line correct-answer">正確答案：${escapeHtml(getAnswerText(q))}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  html += `<button class="btn secondary" onclick="startQuiz()">重新測驗</button>`;
+  document.getElementById("result").innerHTML = html;
+  show("result");
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+</script>
+</body>
+</html>
