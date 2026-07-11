@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>115年第1次 AI應用規劃師-初級｜人工智慧基礎概論【機器學習】歷屆題方向</title>
+<style>
+body{margin:0;background:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;color:#1f2937;line-height:1.7}
+.wrap{max-width:760px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:18px;padding:22px;box-shadow:0 8px 24px #00000012}
+.hidden{display:none}
+h1{font-size:24px;line-height:1.4}
+.muted{color:#6b7280;white-space:pre-wrap}
+.top{display:flex;justify-content:space-between;color:#6b7280}
+.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:10px 0 20px}
+.bar{height:100%;background:#2563eb;width:0}
+.qno{font-weight:800;margin-bottom:8px}
+.stem{font-weight:700;font-size:18px;white-space:pre-wrap;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;padding:13px;margin:9px 0;border:1px solid #e5e7eb;border-radius:12px;background:#fff;white-space:pre-wrap;font-size:16px}
+.opt.good{background:#dcfce7;border-color:#86efac}
+.opt.bad{background:#fee2e2;border-color:#fecaca}
+.feedback{margin-top:14px;padding:13px;border-radius:12px;font-weight:800}
+.feedback.good{background:#dcfce7;color:#166534}
+.feedback.bad{background:#fee2e2;color:#991b1b}
+.btn{width:100%;margin-top:16px;padding:13px;border:0;border-radius:12px;background:#2563eb;color:#fff;font-size:17px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;text-align:center;padding:12px}
+.num{font-size:24px;font-weight:900}
+.wrong{border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:12px 0}
+.wrong h3{color:#be123c}
+.pre{white-space:pre-wrap}
+.answers{border-top:3px solid #ef4444;margin-top:12px;padding-top:10px;font-weight:800}
+@media(max-width:480px){.grid{grid-template-columns:1fr}h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="home" class="card">
+<h1>115 年第1次 AI 應用規劃師-初級。科目人工智慧基礎概論【機器學習】歷屆題方向，共 22題。</h1>
+<p class="muted">每題作答後會立即顯示正確答案，完成後會統計分數、答對、答錯，並列出錯題內容。</p>
+<p class="muted">共22題｜單選題｜每題1分｜滿分22分</p>
+<button class="btn" onclick="start()">開始測驗</button>
+</section>
+
+<section id="quiz" class="card hidden">
+<div class="top"><span>第 <b id="now"></b> / 22 題</span><span>目前作答：<b id="done"></b> 題</span></div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<div id="orig" class="qno"></div>
+<div id="stem" class="stem"></div>
+<div id="opts"></div>
+<div id="fb"></div>
+<button id="next" class="btn hidden" onclick="nextQ()">下一題</button>
+</section>
+
+<section id="result" class="card hidden"></section>
+</div>
+
+<script>
+const qs=[{"number": 3, "stem": "下列何者不符合非監督式學習（Unsupervised Learning）的典型特\n徵？", "options": [{"label": "A", "text": "(A)模型可依據資料中的特徵相似性進行自動分群；"}, {"label": "B", "text": "(B)訓練過程中不需仰賴事\n先定義的標籤資料；"}, {"label": "C", "text": "(C)常用於探索資料的潛在結構或隱含模式；"}, {"label": "D", "text": "(D)模型主\n要學習輸入特徵與既定目標標記之間的對應關係"}], "answer": "D"}, {"number": 5, "stem": "某銀行建立 AI 詐欺交易偵測模型。歷史交易資料中，詐欺樣本比例\n極低，導致模型訓練時偏向預測為「正常交易」。資料科學團隊評估採用 \nSMOTE（Synthetic Minority Over-sampling Technique）改善訓練資料分佈。\n下列何者最符合 SMOTE 技術的主要功能？", "options": [{"label": "A", "text": "(A)透過隨機刪除部分正常交易資料，以降低類別失衡程度；"}, {"label": "B", "text": "(B)依據少數類別\n樣本的特徵空間，合成產生新的少數類別樣本；"}, {"label": "C", "text": "(C)調整模型的損失函數\n（Loss Function）權重，使誤判少數類別時的懲罰提高；"}, {"label": "D", "text": "(D)以交叉驗證\n（Cross-validation）方式重新分割資料集，使各折資料類別比例一致"}], "answer": "B"}, {"number": 7, "stem": "某電信公司建立機器學習模型預測用戶流失風險。資料中包含多個類\n別型特徵（Categorical Features），例如「資費方案類型」與「客戶地區」。為\n使模型能有效使用這些特徵，下列何者最直接用於將類別型特徵轉換為模型可\n處理的數值格式？", "options": [{"label": "A", "text": "(A)資料分群（Data Clustering）；"}, {"label": "B", "text": "(B)特徵交叉（Feature Cross）；"}, {"label": "C", "text": "(C)One-\n\nhot 編碼（One-hot Encoding）；"}, {"label": "D", "text": "(D)寬深模型（Wide and Deep）"}], "answer": "C"}, {"number": 8, "stem": "某零售企業在建置機器學習模型預測顧客購買機率時， 資料同時包\n含大量稀疏類別特徵與數值型特徵。 團隊希望模型既能學習過去已出現的特徵\n組合規律，也能對未出現的特徵組合做出合理預測。 下列哪一種模型架構最適\n合此類需求？", "options": [{"label": "A", "text": "(A)線性迴營（Linear Regression）；"}, {"label": "B", "text": "(B)決策樹（Decision Tree）；"}, {"label": "C", "text": "(C)支援向\n量機（Support Vector Machine, SVM）；"}, {"label": "D", "text": "(D)寬深模型（Wide and Deep）"}], "answer": "D"}, {"number": 19, "stem": "某物流公司導入強化式學習（Reinforcement Learning）優化車隊調\n度。模型在系統運行過程中，會依據不同配送狀態動態調整行動選擇方式，使\n決策結果逐步朝較佳績效收斂。上述模型在學習過程中的調整行為，最符合下\n列哪一項強化式學習核心機制？", "options": [{"label": "A", "text": "(A)調整策略函數以改變行動選擇機率；"}, {"label": "B", "text": "(B)更新訓練資料分布以降低模型偏\n差；"}, {"label": "C", "text": "(C)重新分群狀態資料以識別決策類型；"}, {"label": "D", "text": "(D)建立正確決策標籤進行誤差\n修正"}], "answer": "A"}, {"number": 20, "stem": "某團隊訓練影像分類模型，發現模型在訓練資料上的準確率達 \n98%，但在測試資料上僅有 72%。若團隊希望提升模型對新資料的適應能力，\n並增加訓練資料的多樣性，下列何者最適合？", "options": [{"label": "A", "text": "(A)增加模型的深度與參數量，使模型學習更多細節；"}, {"label": "B", "text": "(B)對訓練影像進行旋\n轉、翻轉等隨機變化；"}, {"label": "C", "text": "(C)提高訓練速度，使模型更快完成學習；"}, {"label": "D", "text": "(D)僅保留\n模型表現較好的訓練資料"}], "answer": "B"}, {"number": 23, "stem": "在 AI 推論服務架構設計中，「批次推論（Batch Inference）」與「即\n時推論（Real-time Inference）」常依任務特性選擇不同機制。下列關於兩者特\n\n性的敘述何者最正確？", "options": [{"label": "A", "text": "(A)批次推論通常以同步請求方式回傳結果，以確保資料一致性；即時推論則多\n採非同步機制以提升系統吞吐量（Throughput）；"}, {"label": "B", "text": "(B)批次推論多用於延遲容忍\n度較高的大規模資料處理，通常以吞吐量（Throughput）最佳化為優先；即時\n推論則著重於請求回應時間的穩定性與低延遲特性；"}, {"label": "C", "text": "(C)批次推論因計算資源\n需求高，僅適用於影像類模型；即時推論則主要應用於結構化資料模型；"}, {"label": "D", "text": "(D)\n即時推論為確保回應速度，通常限制為單筆資料輸入；批次推論則可支援同步\n多筆資料即時回傳"}], "answer": "B"}, {"number": 26, "stem": "在可解釋 AI(Explainable AI, XAI) 的分類架構中，LIME（Local \nInterpretable Model-agnostic Explanations）屬於哪一類解釋技術？", "options": [{"label": "A", "text": "(A)內建可解釋模型（Intrinsic Interpretability）：模型本身具有透明的決策結\n構；"}, {"label": "B", "text": "(B)對話式解釋系統（Conversational AI Explainer）：透過互動對話提供\n模型解釋；"}, {"label": "C", "text": "(C)後處理模型解釋（post-hoc）：對已訓練模型提供外部解釋；"}, {"label": "D", "text": "(D)代理模型技術（Surrogate Model）：訓練另一個簡單模型來完全取代原黑盒\n模型進行推論"}], "answer": "C"}, {"number": 27, "stem": "SHAP（SHapley Additive exPlanations）值常用於分析機器學習模\n型的輸出行為。下列何者最符合 SHAP 值所提供的資訊？", "options": [{"label": "A", "text": "(A)模型在訓練過程中，各特徵對損失函數收斂速度的影響程度；"}, {"label": "B", "text": "(B)依據特徵\n對模型整體準確率的影響，自動篩除低重要性變數；"}, {"label": "C", "text": "(C)在單一預測結果中，\n各輸入特徵對最終輸出所產生的貢獻分配；"}, {"label": "D", "text": "(D)透過調整特徵權重，使模型在\n推論階段降低計算複雜度"}], "answer": "C"}, {"number": 28, "stem": "在金融業導入 AI 模型與可解釋性技術時，反事實解釋\n（Counterfactual Explanation）最符合下列哪一種應用？", "options": [{"label": "A", "text": "(A)分析整體客戶群的信用風險分布，以預測未來違約率趨勢；"}, {"label": "B", "text": "(B)回溯歷史呆\n\n帳案例，辨識造成違約的主要影響因素；"}, {"label": "C", "text": "(C)分析在模型不變的前提下，客戶\n申請資料變動對授信決策結果的影響；"}, {"label": "D", "text": "(D)依據客戶輪廓與行為資料，推薦最\n適合的金融商品以提升交叉銷售"}], "answer": "C"}, {"number": 29, "stem": "在深度學習模型的分析與驗證過程中，研究人員有時會利用「顯著\n性圖（Saliency Map）」來輔助理解模型行為。下列何者最符合此技術的主要用\n途？", "options": [{"label": "A", "text": "(A)量化各輸入特徵對模型整體預測準確度的平均影響程度；"}, {"label": "B", "text": "(B)標示輸入資料\n中對單一預測結果影響較大的區域或部分；"}, {"label": "C", "text": "(C)評估在不同模型參數設定下，\n預測結果的穩定性變化；"}, {"label": "D", "text": "(D)比較不同模型架構在測試資料上的泛化能力差異"}], "answer": "B"}, {"number": 30, "stem": "某商業銀行想建立洗錢行為檢測系統，擁有過去 5 年的交易記錄，\n其中包含已確認的洗錢案例（標記為「異常」）和正常交易（標記為「正常」）。\n銀行希望系統能自動識別新交易是否為洗錢行為，請問使用下列哪一種機器學\n習方法最為適合？", "options": [{"label": "A", "text": "(A)監督式學習的分類問題；"}, {"label": "B", "text": "(B)非監督式學習的分群問題；"}, {"label": "C", "text": "(C)強化式學習；"}, {"label": "D", "text": "(D)非監督式學習的關聯規則挖掘"}], "answer": "A"}, {"number": 31, "stem": "某農場收集了大量作物葉片影像，但只有 30%的影像有病害類別標\n註，其餘 70%的影像沒有任何標籤。農場希望充分利用所有資料來訓練病害識\n別模型。這種情況最適合使用哪一種學習方法？", "options": [{"label": "A", "text": "(A)半監督式學習（Semi-supervised Learning）；"}, {"label": "B", "text": "(B)監督式學習（Supervised \nLearning）；"}, {"label": "C", "text": "(C)非監督式學習（Unsupervised Learning）；"}, {"label": "D", "text": "(D)強化式學習\n（Reinforcement Learning）"}], "answer": "A"}, {"number": 33, "stem": "某公車系統想預測各站點的到站時間，需要考慮歷史班次資料、即\n\n時路況、天氣等因素。由於路況變化複雜，傳統循環神經網路（Recurrent \nNeural Network, RNN）在建模時可能難以保留較早期的重要資訊。下列哪種\n架構最能解決這個問題？", "options": [{"label": "A", "text": "(A)卷積神經網路（Convolutional Neural Network, CNN），利用卷積層捕捉局\n部特徵；"}, {"label": "B", "text": "(B)自編碼器（Autoencoder, AE），先進行資料壓縮再重建；"}, {"label": "C", "text": "(C)全\n連接神經網路（Fully Connected Neural Network, FCNN），增加隱藏層數量；"}, {"label": "D", "text": "(D)長短期記憶網路（Long Short-Term Memory, LSTM），改善 RNN 的長期記\n憶問題"}], "answer": "D"}, {"number": 34, "stem": "某保險公司每月處理約 50 萬筆理賠申請，希望建立 AI 系統自動識\n別可疑的詐欺案件。由於公司內部缺乏 AI 專業人員，且需要快速上線驗證效\n果，IT 資訊主管正在評估不同的 AI 平台解決方案。在去識別化個人隱私資料\n後，下列哪一種平台類型最適合該公司的需求？", "options": [{"label": "A", "text": "(A)從零開始建立深度學習框架並自行訓練模型；"}, {"label": "B", "text": "(B)採用開源機器學習框架進\n行客製化模型開發；"}, {"label": "C", "text": "(C)使用雲端 AutoML 平台進行自動化模型訓練；"}, {"label": "D", "text": "(D)購\n買現成的詐欺偵測軟體套件直接部署"}], "answer": "C"}, {"number": 39, "stem": "某企業評估於不同業務場景導入機器學習技術。下列哪一項應用情\n境與機器學習類型的搭配最為適當？", "options": [{"label": "A", "text": "(A)在醫療影像分析中，同時運用少量已標註資料與大量未標註影像進行模型訓\n練—監督式學習（Supervised Learning）；"}, {"label": "B", "text": "(B)在智慧推薦系統中，利用顧客是\n否點擊的歷史標籤資料預測未來偏好—非監督式學習（Unsupervised \nLearning）；"}, {"label": "C", "text": "(C)在詐欺交易分析中，模型透過錯誤判斷所產生的損失作為回饋\n訊號，持續調整策略—監督式學習（Supervised Learning）；"}, {"label": "D", "text": "(D)在股價資料分\n析中，將歷史價格變動模式劃分為若干趨勢型態，且未使用人工標註—非監督\n式學習（Unsupervised Learning）"}], "answer": "D"}, {"number": 40, "stem": "某製造業公司建置機器學習模型，用於預測產品是否為瑕疵品。實\n\n際生產資料中，瑕疵品比例極低，大多數樣本皆為正常品。模型測試時發現，\n即使模型多數預測為正常品，仍可獲得很高的整體準確率。在此情境下，若希\n望更有效衡量模型對瑕疵品的辨識能力，下列何者較適合作為主要評估指標？", "options": [{"label": "A", "text": "(A)F1-score；"}, {"label": "B", "text": "(B)均方誤差（Root Mean Squared Error, RMSE）；"}, {"label": "C", "text": "(C)準確率\n（Accuracy）；"}, {"label": "D", "text": "(D)判定係數（R², Coefficient of Determination）"}], "answer": "A"}, {"number": 43, "stem": "關於機器學習不同的學習模式，下列敘述何者錯誤？ \n1. 監督式學習（Supervised Learning）透過已標註資料學習輸入與目標之\n間的對應關係，常見任務包含分類與數值預測。 \n2. 非監督式學習（Unsupervised Learning）雖不需標註資料，但通常需預\n先定義每筆資料的正確輸出類別以利模型收斂。 \n3. 半監督式學習（Semi-supervised Learning）在訓練過程中僅利用未標\n註資料進行特徵學習，並不涉及標註資料。 \n4. 自監督式學習（Self-supervised Learning）的訓練方式與監督式學習相\n同，皆需人工逐筆提供標註資料。 \n5. 強化式學習（Reinforcement Learning）透過與環境互動並依據回饋訊\n號調整策略，以優化決策行為。 \n6. 自監督式學習（Self-supervised Learning）通常利用資料本身產生訓練\n目標，以降低對人工標註資料的依賴。", "options": [{"label": "A", "text": "(A)2、3、6；"}, {"label": "B", "text": "(B)2、4、5；"}, {"label": "C", "text": "(C)1、3、6；"}, {"label": "D", "text": "(D)2、3、4"}], "answer": "D"}, {"number": 45, "stem": "某團隊訓練深層神經網路模型時，發現訓練誤差長時間幾乎未下\n降，模型參數更新幅度極小，呈現學習停滯現象。若研判問題與梯度傳遞效率\n有關，下列何者最適合的改善策略？", "options": [{"label": "A", "text": "(A)延長模型訓練時間，使模型有更多機會調整參數；"}, {"label": "B", "text": "(B)增加訓練樣本數量，\n以提升模型學習能力；"}, {"label": "C", "text": "(C)調整模型中的啟動函數設定，以改善訓練過程的穩\n定性；"}, {"label": "D", "text": "(D)簡化模型結構，以降低模型過度擬合的可能性"}], "answer": "C"}, {"number": 48, "stem": "某物流公司想導入 AI 以提升營運效率，評估不同資料型態與模型架\n構。下列哪一種應用情境最適合採用卷積神經網路（Convolutional Neural \nNetwork, CNN）作為主要模型架構？", "options": [{"label": "A", "text": "(A)依據包裹每日掃描紀錄的時間序列，預測下週各倉庫的進貨量波動；"}, {"label": "B", "text": "(B)根\n據客服對話逐句內容的先後順序，判斷客訴是否可能升級為申訴案件；"}, {"label": "C", "text": "(C)根\n據倉庫監視器影像，自動辨識貨架是否缺貨並標示缺貨區域位置；"}, {"label": "D", "text": "(D)依據車\n隊 GPS 路徑點的連續軌跡，預測下一段可能行駛路線"}], "answer": "C"}, {"number": 49, "stem": "某 AI 科技公司在工業缺陷檢測領域已有成熟的辨識產品經驗。現欲\n與新客戶合作開發一項類似產品的表面瑕疵檢測系統，但因新產品量產不久，\n標註樣本極為稀少且專家標註成本高昂。在不大幅增加標註預算的前提下，下\n列哪一種做法最能利用該公司既有的技術優勢來提升模型表現？", "options": [{"label": "A", "text": "(A)增加模型參數規模，使模型具備更強表達能力；"}, {"label": "B", "text": "(B)透過資料增強（Data \nAugmentation）擴展影像變化，以提升模型穩定性；"}, {"label": "C", "text": "(C)重新蒐集大量影像並\n進行完整人工標註；"}, {"label": "D", "text": "(D)採用遷移學習（Transfer Learning），利用既有預訓練\n模型進行調整"}], "answer": "D"}, {"number": 50, "stem": "某醫院使用機器學習模型篩檢癌症患者。模型預測結果會決定哪些\n病人需要進一步檢查。院方非常重視盡量找出所有可能的癌症患者，即希望降\n低漏診（Missed Diagnosis）風險，即便這可能增加一些誤判。下列哪一個評\n估指標最能反映模型找出癌症患者的能力？", "options": [{"label": "A", "text": "(A)精準率（Precision）；"}, {"label": "B", "text": "(B)召回率（Recall）；"}, {"label": "C", "text": "(C)假陽性率（False Positive \nRate）；"}, {"label": "D", "text": "(D)ROC-AUC 曲線"}], "answer": "B"}];
+let idx=0, ua=Array(qs.length).fill(null), locked=false;
+
+function show(id){
+ document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+}
+function start(){idx=0;ua=Array(qs.length).fill(null);show('quiz');render();}
+function render(){
+ locked=false;
+ const q=qs[idx];
+ now.textContent=idx+1;
+ done.textContent=ua.filter(x=>x!==null).length;
+ bar.style.width=((idx+1)/qs.length*100)+'%';
+ orig.textContent='原卷題號 '+q.number;
+ stem.textContent=q.stem;
+ opts.innerHTML='';
+ q.options.forEach(o=>{
+   const b=document.createElement('button');
+   b.className='opt'; b.textContent=o.text; b.dataset.label=o.label;
+   b.onclick=()=>answer(o.label); opts.appendChild(b);
+ });
+ fb.innerHTML=''; next.classList.add('hidden');
+}
+function answer(label){
+ if(locked)return; locked=true;
+ const q=qs[idx]; ua[idx]=label;
+ document.querySelectorAll('.opt').forEach(b=>{
+   b.disabled=true;
+   if(b.dataset.label===q.answer)b.classList.add('good');
+   if(b.dataset.label===label && label!==q.answer)b.classList.add('bad');
+ });
+ const correct=q.options.find(o=>o.label===q.answer).text;
+ fb.className='feedback '+(label===q.answer?'good':'bad');
+ fb.textContent=(label===q.answer?'✅ 答對！':'❌ 答錯！')+'正確答案：'+correct;
+ next.textContent=idx===qs.length-1?'查看成績':'下一題';
+ next.classList.remove('hidden');
+}
+function nextQ(){if(idx<qs.length-1){idx++;render();}else{results();}}
+function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+function answerText(q,l){if(!l)return '未作答'; return q.options.find(o=>o.label===l)?.text||l;}
+function results(){
+ let correct=0, wrong=[];
+ qs.forEach((q,i)=>{if(ua[i]===q.answer)correct++;else wrong.push({q,user:ua[i]})});
+ let html=`<h1>測驗完成</h1><div class="grid">
+ <div class="stat"><div class="num">${correct}</div><div>分數</div></div>
+ <div class="stat"><div class="num">${correct}</div><div>答對</div></div>
+ <div class="stat"><div class="num">${qs.length-correct}</div><div>答錯</div></div>
+ </div>`;
+ if(wrong.length===0) html+='<p>🎉 全部答對，太厲害了！</p>';
+ else {
+   html+='<h2>錯題回顧</h2>';
+   wrong.forEach(x=>{
+     const q=x.q;
+     html+=`<div class="wrong"><h3>原卷題號 ${q.number}</h3>
+     <div class="pre"><b>${esc(q.stem)}</b></div>
+     <div class="pre">${esc(q.options.map(o=>o.text).join('\n\n'))}</div>
+     <div class="answers">你的答案：${esc(answerText(q,x.user))}<br>正確答案：${esc(answerText(q,q.answer))}</div></div>`;
+   });
+ }
+ html+='<button class="btn" onclick="start()">重新測驗</button>';
+ result.innerHTML=html; show('result');
+}
+</script>
+</body>
+</html>
