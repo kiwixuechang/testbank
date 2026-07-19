@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 應用規劃師初級｜機器學習基本分不能丟</title>
+  <style>
+    :root{--ink:#20302b;--muted:#66746f;--green:#76a947;--deep:#365f35;--cream:#f7f4e9;--card:#fff;--line:#dce4dc;--ok:#267047;--bad:#b5423b;--orange:#ef9a3c}
+    *{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:linear-gradient(145deg,#edf6e5,#fff9e8);min-height:100vh}
+    button{font:inherit}.shell{width:min(760px,100%);margin:auto;padding:22px 16px 42px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--deep);margin-bottom:18px}.brand-mark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 65% 35%,#d7ef7a 0 20%,#86b64c 21% 67%,#5c8b39 68%);box-shadow:inset 0 0 0 3px #fff,0 3px 9px #567b4333}.card{background:var(--card);border:1px solid #e4e8df;border-radius:22px;box-shadow:0 14px 36px #37522b16;padding:clamp(22px,5vw,42px)}.eyebrow{display:inline-block;background:#dff0cb;color:#3d6d32;padding:7px 12px;border-radius:999px;font-weight:800;font-size:.9rem}h1{font-size:clamp(1.8rem,6vw,2.65rem);line-height:1.25;margin:16px 0 10px}h2{font-size:clamp(1.28rem,4.5vw,1.7rem);line-height:1.55;margin:10px 0 22px}.lead{font-size:1.08rem;line-height:1.9;margin:0 0 25px;color:#485651}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.fact{text-align:center;background:var(--cream);padding:14px 6px;border-radius:14px}.fact strong{display:block;font-size:1.35rem;color:var(--deep)}.fact span{font-size:.84rem;color:var(--muted)}.btn{border:0;border-radius:13px;padding:14px 22px;font-weight:900;cursor:pointer;transition:.18s}.btn-primary{width:100%;background:var(--deep);color:#fff;box-shadow:0 7px 15px #365f3540}.btn-primary:hover{transform:translateY(-1px);background:#294f2b}.btn-secondary{background:#edf2e9;color:var(--deep)}.hidden{display:none!important}.progress-row{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:10px;color:var(--muted);font-weight:700}.bar{height:9px;background:#e9eee7;border-radius:99px;overflow:hidden;margin-bottom:24px}.bar>div{height:100%;background:linear-gradient(90deg,var(--green),#b6cc50);transition:width .25s}.question{white-space:pre-wrap}.options{display:grid;gap:12px}.option{border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 16px;text-align:left;line-height:1.6;cursor:pointer;color:var(--ink)}.option:hover:not(:disabled){border-color:#91b86b;background:#f8fbf3}.option:disabled{cursor:default}.option.selected{border-color:#496f3d;background:#f0f7ea}.option.correct{border-color:var(--ok);background:#eaf7ef;color:#155b37}.option.wrong{border-color:var(--bad);background:#fff0ee;color:#8c2f2a}.feedback{margin-top:19px;border-radius:14px;padding:16px 18px;font-weight:850}.feedback.ok{background:#eaf7ef;color:var(--ok)}.feedback.bad{background:#fff0ee;color:var(--bad)}.next{margin-top:16px}.score{text-align:center;margin-bottom:26px}.score-ring{width:135px;height:135px;margin:8px auto 16px;border-radius:50%;display:grid;place-content:center;background:conic-gradient(var(--green) var(--score),#e8ece6 0);position:relative}.score-ring:before{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff}.score-ring strong,.score-ring span{position:relative;z-index:1;text-align:center}.score-ring strong{font-size:2rem}.score-ring span{color:var(--muted);font-size:.85rem}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.summary div{border-radius:14px;padding:15px 6px;text-align:center;background:var(--cream)}.summary strong{display:block;font-size:1.35rem}.mistakes-title{margin:32px 0 14px}.mistake{border:1px solid var(--line);border-radius:17px;padding:20px;margin:14px 0}.mistake h3{font-size:1.05rem;line-height:1.7;margin:0 0 13px}.mini-options{margin:0;padding-left:0;list-style:none;color:#46534f;line-height:1.85}.answer-lines{margin-top:13px;padding-top:12px;border-top:1px dashed #cfd9cf;line-height:1.8}.yours{color:var(--bad);font-weight:800}.right{color:var(--ok);font-weight:800}.actions{display:flex;gap:10px;margin-top:25px}.actions .btn{flex:1}@media(max-width:520px){.shell{padding:12px 10px 30px}.card{border-radius:18px;padding:22px 17px}.facts,.summary{gap:6px}.option{padding:13px}.actions{flex-direction:column}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <div class="brand"><span class="brand-mark" aria-hidden="true"></span>KIWI 學長｜線上測驗</div>
+  <section id="home" class="card">
+    <span class="eyebrow">基本分不能丟｜共10題</span>
+    <h1>AI 應用規劃師初級</h1>
+    <p class="lead">科目人工智慧基礎概論<br><strong>【機器學習】基本分不能丟，共10題。</strong><br>題目來自官方學習指引模擬考題，各題均有對應頁碼，方便複習。<br>每題作答後會立即顯示正確答案，完成後會統計分數、答對、答錯，並列出錯題內容。</p>
+    <div class="facts"><div class="fact"><strong>10</strong><span>題目</span></div><div class="fact"><strong>即時</strong><span>答案回饋</span></div><div class="fact"><strong>完整</strong><span>錯題整理</span></div></div>
+    <button class="btn btn-primary" id="start">開始作答</button>
+  </section>
+
+  <section id="quiz" class="card hidden">
+    <div class="progress-row"><span id="counter"></span><span id="answeredCount"></span></div>
+    <div class="bar"><div id="bar"></div></div>
+    <h2 id="question" class="question"></h2>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <button id="next" class="btn btn-primary next hidden">下一題</button>
+  </section>
+
+  <section id="result" class="card hidden">
+    <div class="score"><span class="eyebrow">測驗完成</span><h1>作答結果</h1><div id="scoreRing" class="score-ring"><strong id="score"></strong><span>總分</span></div></div>
+    <div class="summary"><div><strong id="total"></strong>總題數</div><div><strong id="correct"></strong>答對</div><div><strong id="wrong"></strong>答錯</div></div>
+    <div id="mistakes"></div>
+    <div class="actions"><button class="btn btn-secondary" id="backHome">回到首頁</button><button class="btn btn-primary" id="retry">重新作答</button></div>
+  </section>
+</main>
+<script>
+const questions=[
+ {q:'1. 機器學習的三個核心要素是什麼？(學習指引 P.3-39)',o:['（A）數據、模型、損失函數','（B）訓練集、測試集、驗證集','（C）特徵工程、優化演算法、正則化','（D）超參數調整、模型選擇、數據處理'],a:0},
+ {q:'2. 下列哪一項屬於監督式學習的特點？(學習指引 P.3-36)',o:['（A）數據集中包含標記訊息','（B）僅需探索數據內部的結構','（C）使用代理與環境互動進行學習','（D）不需要驗證集來調整參數'],a:0},
+ {q:'3. 機器學習模型過擬合的主要原因是什麼？(學習指引 P.3-42)',o:['（A）模型的複雜度不足','（B）訓練數據樣本過多','（C）模型過度學習數據中的雜訊','（D）使用過於簡單的損失函數'],a:2},
+ {q:'4. 交叉驗證的主要目的是什麼？(學習指引 P.3-43)',o:['（A）提高模型的訓練速度','（B）驗證數據是否線性可分','（C）減少模型的過擬合風險','（D）測試模型的容錯能力'],a:2},
+ {q:'5. 機器學習的梯度下降演算法主要用於什麼？(學習指引 P.3-41)',o:['（A）減少模型的計算複雜度','（B）優化模型參數以最小化損失函數','（C）減少數據中的雜訊干擾','（D）增強數據特徵的表示能力'],a:1},
+ {q:'6. 線性迴歸模型最適合解決哪種類型的問題？(學習指引 P.3-36)',o:['（A）圖像分類','（B）銷售額預測','（C）聚類分析','（D）遊戲策略學習'],a:1},
+ {q:'7. 決策樹的最大優勢是什麼？(學習指引無)',o:['（A）適合大規模數據的訓練','（B）具有良好的可解釋性','（C）不需要進行數據標準化','（D）適用於圖像生成任務'],a:1},
+ {q:'8. 神經網路與傳統機器學習模型的主要區別是什麼？(學習指引 P.3-36)',o:['（A）神經網路無法處理非線性數據','（B）神經網路透過多層結構學習複雜特徵','（C）神經網路只適用於迴歸問題','（D）神經網路不需要大量數據支持'],a:1},
+ {q:'9. 下列關於生成對抗網路（GAN）的描述正確的是哪一項？(學習指引無)',o:['（A）GAN 僅用於分類問題','（B）GAN 由生成器和鑑別器組成','（C）GAN 的結果始終高度可解釋','（D）GAN 不能生成高品質的數據'],a:1},
+ {q:'10. 隨機森林（Random Forest）改進了單一決策樹的缺陷，主要透過什麼方法實現？(學習指引無)',o:['（A）使用核函數映射高維空間','（B）集成多棵隨機生成的決策樹並投票','（C）增加模型參數以減少偏差','（D）採用生成模型替代分類器'],a:1}
+];
+const $=id=>document.getElementById(id);let index=0,answers=[];
+function show(id){['home','quiz','result'].forEach(x=>$(x).classList.toggle('hidden',x!==id));scrollTo({top:0,behavior:'smooth'})}
+function start(){index=0;answers=[];show('quiz');render()}
+function render(){const item=questions[index];$('counter').textContent=`第 ${index+1} 題／共 ${questions.length} 題`;$('answeredCount').textContent=`已完成 ${index} 題`;$('bar').style.width=`${index/questions.length*100}%`;$('question').textContent=item.q;$('options').innerHTML='';$('feedback').className='feedback hidden';$('next').classList.add('hidden');item.o.forEach((text,i)=>{const b=document.createElement('button');b.className='option';b.textContent=text;b.onclick=()=>answer(i);$('options').appendChild(b)})}
+function answer(choice){const item=questions[index],buttons=[...$('options').children];answers[index]=choice;buttons.forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add('correct');if(i===choice&&i!==item.a)b.classList.add('wrong')});const good=choice===item.a;$('feedback').className=`feedback ${good?'ok':'bad'}`;$('feedback').textContent=good?`答對了！正確答案：${item.o[item.a]}`:`答錯了。正確答案：${item.o[item.a]}`;$('next').textContent=index===questions.length-1?'查看測驗結果':'下一題';$('next').classList.remove('hidden');$('bar').style.width=`${(index+1)/questions.length*100}%`;$('answeredCount').textContent=`已完成 ${index+1} 題`}
+function next(){if(index<questions.length-1){index++;render()}else finish()}
+function finish(){const correct=answers.filter((v,i)=>v===questions[i].a).length,wrong=questions.length-correct,score=Math.round(correct/questions.length*100);$('score').textContent=score;$('scoreRing').style.setProperty('--score',`${score}%`);$('total').textContent=questions.length;$('correct').textContent=correct;$('wrong').textContent=wrong;const box=$('mistakes');box.innerHTML='';if(!wrong){box.innerHTML='<h2 class="mistakes-title">全部答對！</h2><p class="feedback ok">太棒了，這 10 題全部掌握。</p>'}else{const title=document.createElement('h2');title.className='mistakes-title';title.textContent='錯題內容';box.appendChild(title);questions.forEach((item,i)=>{if(answers[i]!==item.a){const d=document.createElement('article');d.className='mistake';const h=document.createElement('h3');h.textContent=item.q;const ul=document.createElement('ul');ul.className='mini-options';item.o.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.appendChild(li)});const lines=document.createElement('div');lines.className='answer-lines';const y=document.createElement('div');y.className='yours';y.textContent=`你的答案：${item.o[answers[i]]}`;const r=document.createElement('div');r.className='right';r.textContent=`正確答案：${item.o[item.a]}`;lines.append(y,r);d.append(h,ul,lines);box.appendChild(d)}})}show('result')}
+$('start').onclick=start;$('next').onclick=next;$('retry').onclick=start;$('backHome').onclick=()=>show('home');
+</script>
+</body>
+</html>
